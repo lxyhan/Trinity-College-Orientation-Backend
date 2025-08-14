@@ -200,7 +200,7 @@ export default function LoginPage() {
         </div>
       </div>
       <div className="relative hidden w-0 flex-1 lg:flex lg:items-center lg:justify-center lg:pl-4 lg:pr-16">
-        <img src="/schedule.png" className="max-h-full max-w-full object-contain border-2 border-black" />
+        <img src="/Schedule.png" className="max-h-full max-w-full object-contain border-2 border-black" />
       </div>
     </div>
   );

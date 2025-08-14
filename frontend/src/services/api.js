@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://honest-rejoicing.railway.app';
+const API_BASE_URL = 'http://localhost:8000';
 
 export const apiService = {
   // Fetch all events
