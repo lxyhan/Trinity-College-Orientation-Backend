@@ -1,0 +1,11 @@
+backend-venv/
+scripts/__pycache__/
+backend/__pycache__/
+*.pyc
+.git/
+.DS_Store
+backend/DEPLOYMENT.md
+backend/examples/
+backend/test_api.py
+backend/start.sh
+frontend/
