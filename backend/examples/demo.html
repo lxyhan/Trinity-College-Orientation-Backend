@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trinity College Orientation Leaders API Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .search-box button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .search-box button:hover {
+            background: #5a6fd8;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .leader-schedule {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .event-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Trinity College Orientation Leaders</h1>
+            <p>API Demo & Dashboard</p>
+        </div>
+        
+        <!-- Summary Statistics -->
+        <div class="section">
+            <h2>📊 Summary Statistics</h2>
+            <div id="summary-dashboard" class="stats-grid">
+                <div class="loading">Loading statistics...</div>
+            </div>
+        </div>
+        
+        <!-- Leader Search -->
+        <div class="section">
+            <h2>🔍 Search Leader Schedule</h2>
+            <div class="search-box">
+                <input type="text" id="leader-search" placeholder="Enter leader name (e.g., adrianyh)" />
+                <button onclick="searchLeader()">Search</button>
+            </div>
+            <div id="leader-schedule"></div>
+        </div>
+        
+        <!-- Events Table -->
+        <div class="section">
+            <h2>📅 All Events</h2>
+            <div class="search-box">
+                <input type="text" id="event-filter" placeholder="Filter events..." />
+                <button onclick="filterEvents()">Filter</button>
+            </div>
+            <table id="events-table">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Time Slot</th>
+                        <th>Duration</th>
+                        <th>Leaders Needed</th>
+                        <th>Leaders Assigned</th>
+                        <th>Staffing %</th>
+                        <th>Fully Staffed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="7" class="loading">Loading events...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Leaders Table -->
+        <div class="section">
+            <h2>👥 All Leaders</h2>
+            <table id="leaders-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Events</th>
+                        <th>Total Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="4" class="loading">Loading leaders...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Assignments -->
+        <div class="section">
+            <h2>📋 Leader Assignments</h2>
+            <div class="search-box">
+                <input type="number" id="min-hours" placeholder="Min hours" min="0" step="0.5" />
+                <button onclick="filterAssignments()">Filter by Hours</button>
+            </div>
+            <div id="assignments-list"></div>
+        </div>
+    </div>
+
+    <script src="frontend_integration.js"></script>
+    <script>
+        // Additional demo-specific functionality
+        function filterEvents() {
+            const filter = document.getElementById('event-filter').value;
+            if (filter) {
+                // This would need to be implemented in the backend
+                console.log('Filtering events by:', filter);
+            }
+        }
+        
+        function filterAssignments() {
+            const minHours = document.getElementById('min-hours').value;
+            if (minHours) {
+                getHighHourAssignments(parseFloat(minHours));
+            }
+        }
+        
+        // Initialize the demo
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('Demo initialized');
+            
+            // Load all data
+            try {
+                await getAllEvents();
+                await getSummaryStats();
+                await getAllLeaders();
+                
+                // Show a sample leader
+                await searchLeader('adrianyh');
+                
+            } catch (error) {
+                console.error('Demo initialization failed:', error);
+                document.body.innerHTML += `<div class="error">Failed to load data: ${error.message}</div>`;
+            }
+        });
+        
+        // Add enter key support for search
+        document.getElementById('leader-search').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchLeader();
+            }
+        });
+        
+        // Override search function to use the input value
+        function searchLeader() {
+            const searchInput = document.getElementById('leader-search');
+            const leaderName = searchInput.value.trim();
+            
+            if (leaderName) {
+                searchLeaderByName(leaderName);
+            } else {
+                document.getElementById('leader-schedule').innerHTML = '<div class="error">Please enter a leader name</div>';
+            }
+        }
+        
+        async function searchLeaderByName(leaderName) {
+            try {
+                const data = await apiCall(`/api/lookup/${encodeURIComponent(leaderName)}`);
+                
+                const leaderScheduleDiv = document.getElementById('leader-schedule');
+                leaderScheduleDiv.innerHTML = `
+                    <div class="leader-schedule">
+                        <h3>${data.leader_name}</h3>
+                        <p><strong>Email:</strong> ${data.leader_email}</p>
+                        <p><strong>Total Events:</strong> ${data.total_events}</p>
+                        <p><strong>Total Hours:</strong> ${data.total_hours}</p>
+                        
+                        <h4>Schedule:</h4>
+                        <div class="schedule-list">
+                            ${data.events.map(event => `
+                                <div class="event-item">
+                                    <span class="event-name">${event.event_name}</span>
+                                    <span class="event-date">${event.date}</span>
+                                    <span class="event-time">${event.start_time} - ${event.end_time}</span>
+                                    <span class="event-duration">${event.duration_hours}h</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                document.getElementById('leader-schedule').innerHTML = `<div class="error">Leader not found: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
