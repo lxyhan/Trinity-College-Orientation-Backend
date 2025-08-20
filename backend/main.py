@@ -356,53 +356,35 @@ async def lookup_leader_schedule(leader_name: str):
         if len(leader_assignments) == 0:
             try:
                 leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
-                # VERY LAX name matching algorithm with fallback
-                try:
-                    import re
-                    
-                    # Clean the search term - remove special chars, extra spaces
-                    clean_search = re.sub(r'[^\w\s]', '', leader_name_lower).strip()
-                    search_parts = [part.strip() for part in clean_search.split() if part.strip()]
-                    
-                    def matches_leader(row):
-                        try:
-                            # Get all possible name variations
-                            first_name = str(row['First Name']).lower()
-                            last_name = str(row['Last Name']).lower()
-                            
-                            # Clean names - remove special chars
-                            clean_first = re.sub(r'[^\w\s]', ' ', first_name)
-                            clean_last = re.sub(r'[^\w\s]', ' ', last_name)
-                            
-                            # Create searchable text with all variations
-                            searchable_text = f"{clean_first} {clean_last} {first_name} {last_name}"
-                            
-                            # Also add individual words from first name (for parentheses cases)
-                            first_words = re.findall(r'\w+', clean_first)
-                            searchable_text += " " + " ".join(first_words)
-                            
-                            # Very lenient matching - if ANY search part is found, it's a potential match
-                            if len(search_parts) == 1:
-                                # Single word - just check if it's anywhere in the names
-                                return search_parts[0] in searchable_text
-                            else:
-                                # Multiple words - check if most parts match (75% threshold)
-                                matches = sum(1 for part in search_parts if part in searchable_text)
-                                return matches >= max(1, len(search_parts) * 0.75)
-                        except Exception as e:
-                            print(f"Error in matches_leader: {e}")
-                            return False
-                    
-                    # Apply the very lenient matching
-                    name_matches = leaders_df[leaders_df.apply(matches_leader, axis=1)]
-                    
-                except Exception as e:
-                    print(f"Error in name matching: {e}")
-                    # Fallback to simple matching
-                    name_matches = leaders_df[
-                        (leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False)) |
-                        (leaders_df['Last Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False))
-                    ]
+                # SUPER SIMPLE and robust name matching
+                search_words = leader_name_lower.replace('(', ' ').replace(')', ' ').split()
+                
+                # Build multiple search patterns
+                conditions = []
+                
+                # For each word in the search, check if it appears in first or last name
+                for word in search_words:
+                    if len(word) > 1:  # Skip single letters
+                        conditions.extend([
+                            leaders_df['First Name'].str.lower().str.contains(word, na=False, regex=False),
+                            leaders_df['Last Name'].str.lower().str.contains(word, na=False, regex=False)
+                        ])
+                
+                # Also try the full search term
+                conditions.extend([
+                    leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False),
+                    leaders_df['Last Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False),
+                    (leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()).str.contains(leader_name_lower, na=False, regex=False)
+                ])
+                
+                # Combine all conditions with OR
+                if conditions:
+                    combined_condition = conditions[0]
+                    for condition in conditions[1:]:
+                        combined_condition = combined_condition | condition
+                    name_matches = leaders_df[combined_condition]
+                else:
+                    name_matches = pd.DataFrame()  # Empty result
                 
                 if len(name_matches) > 0:
                     # Get the email and find assignments
