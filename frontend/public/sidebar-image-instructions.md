@@ -22,4 +22,5 @@ To add an image to the sidebar of the orientation schedule:
 - Event photos
 - Welcome messages
 
+
 Just save your image as `sidebar-image.png` in the public folder and it will automatically appear!
