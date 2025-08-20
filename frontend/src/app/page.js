@@ -203,7 +203,7 @@ export default function LoginPage() {
       </div>
       <div className="relative hidden w-0 flex-1 lg:flex lg:items-center lg:justify-center lg:pl-4 lg:pr-16">
         <Image 
-          src="/schedule.png" 
+          src="/Schedule.png" 
           alt="Trinity College Orientation Schedule" 
           width={2000}
           height={1294}
