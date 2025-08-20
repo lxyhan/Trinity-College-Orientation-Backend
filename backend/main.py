@@ -249,7 +249,7 @@ async def get_all_events():
         "events": enriched_events
     }
 
-@app.get("/api/lookup/{leader_name}")
+@app.get("/api/lookup/{leader_name:path}")
 async def lookup_leader_schedule(leader_name: str):
     """
     Look up a leader's scheduled events by name.
