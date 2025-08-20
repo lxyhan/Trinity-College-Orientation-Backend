@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { fetchUserData, createEvent, extractEventsFromUserData } from '../services/scheduleApi';
 import { apiService } from '../services/api';
 import { filterEventsForDate } from '../utils/dateUtils';
@@ -16,7 +16,7 @@ export const useScheduleData = () => {
   const [currentDate] = useState(EVENTS_WEEK_START);
 
   // Load all data
-  const loadScheduleData = async () => {
+  const loadScheduleData = useCallback(async () => {
     try {
       const storedUserName = localStorage.getItem('userName') || 'Adrian Cheng';
       setUserName(storedUserName);
@@ -64,7 +64,7 @@ export const useScheduleData = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Fallback to localStorage if API fails
   const loadFromLocalStorage = () => {
@@ -101,7 +101,7 @@ export const useScheduleData = () => {
 
   useEffect(() => {
     loadScheduleData();
-  }, []); // Remove currentDate dependency since it's now fixed
+  }, [loadScheduleData]); // Include loadScheduleData dependency
 
   return {
     userName,

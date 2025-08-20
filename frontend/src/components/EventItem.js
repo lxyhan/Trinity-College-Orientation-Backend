@@ -217,6 +217,7 @@ const LoadingIndicator = React.memo(() => (
     <span className="text-xs opacity-75">Loading...</span>
   </div>
 ));
+LoadingIndicator.displayName = 'LoadingIndicator';
 
 const LeadersList = React.memo(({ leaders, totalCount, hasMore, hiddenCount }) => (
   <>
@@ -249,6 +250,7 @@ const LeadersList = React.memo(({ leaders, totalCount, hasMore, hiddenCount }) =
     </div>
   </>
 ));
+LeadersList.displayName = 'LeadersList';
 
 const LeaderItem = React.memo(({ leader }) => {
   const displayName = leader.first_name && leader.last_name 
@@ -270,6 +272,7 @@ const LeaderItem = React.memo(({ leader }) => {
     </div>
   );
 });
+LeaderItem.displayName = 'LeaderItem';
 
 const UnassignedIndicator = React.memo(() => (
   <div className="flex items-center">
@@ -279,5 +282,6 @@ const UnassignedIndicator = React.memo(() => (
     <span className="text-sm opacity-50">Unassigned</span>
   </div>
 ));
+UnassignedIndicator.displayName = 'UnassignedIndicator';
 
 export default EventItem;
