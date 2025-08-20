@@ -28,13 +28,16 @@ app.add_middleware(
 def load_data():
     """Load the orientation data from CSV files"""
     try:
-        # Get the base directory (project root)
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        print(f"🔍 Base directory: {base_dir}")
-        print(f"📁 Current working directory: {os.getcwd()}")
-        print(f"📄 Looking for files in: {base_dir}")
+        # Get the base directory - try multiple possible locations
+        possible_base_dirs = [
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),  # From backend/ -> project root
+            os.getcwd(),  # Current working directory 
+            os.path.dirname(os.getcwd()),  # Parent of current directory
+            ".",  # Current directory
+            ".."  # Parent directory
+        ]
         
-        # Check if files exist
+        base_dir = None
         csv_files = [
             "enhanced_orientation_assignments_leader_assignments.csv",
             "enhanced_orientation_assignments_event_staffing.csv", 
@@ -42,10 +45,22 @@ def load_data():
             "enhanced_orientation_assignments_meal_eligibility.csv"
         ]
         
-        for csv_file in csv_files:
-            file_path = os.path.join(base_dir, csv_file)
-            exists = os.path.exists(file_path)
-            print(f"📋 {csv_file}: {'✅ EXISTS' if exists else '❌ MISSING'} at {file_path}")
+        # Find the directory that contains our CSV files
+        for potential_dir in possible_base_dirs:
+            test_file = os.path.join(potential_dir, csv_files[0])
+            if os.path.exists(test_file):
+                base_dir = potential_dir
+                print(f"✅ Found CSV files in: {base_dir}")
+                break
+        
+        if base_dir is None:
+            print(f"❌ Could not find CSV files in any of these locations:")
+            for potential_dir in possible_base_dirs:
+                print(f"   - {os.path.abspath(potential_dir)}")
+            raise FileNotFoundError("CSV files not found")
+        
+        print(f"🔍 Using base directory: {os.path.abspath(base_dir)}")
+        print(f"📁 Current working directory: {os.getcwd()}")
         
         # Load all four CSV files from project root (enhanced versions)
         assignments_df = pd.read_csv(os.path.join(base_dir, "enhanced_orientation_assignments_leader_assignments.csv"))
@@ -72,6 +87,22 @@ def load_data():
 
 # Helper function to get base directory
 def get_base_dir():
+    # Try to find the directory with CSV files
+    possible_base_dirs = [
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),  # From backend/ -> project root
+        os.getcwd(),  # Current working directory 
+        os.path.dirname(os.getcwd()),  # Parent of current directory
+        ".",  # Current directory
+        ".."  # Parent directory
+    ]
+    
+    # Test with a known CSV file
+    test_file = "enhanced_orientation_assignments_leader_assignments.csv"
+    for potential_dir in possible_base_dirs:
+        if os.path.exists(os.path.join(potential_dir, test_file)):
+            return potential_dir
+    
+    # Fallback to original logic
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Load data at startup
