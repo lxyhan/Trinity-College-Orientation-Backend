@@ -356,35 +356,61 @@ async def lookup_leader_schedule(leader_name: str):
         if len(leader_assignments) == 0:
             try:
                 leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
-                # SUPER SIMPLE and robust name matching
+                # SMART name matching with exact match priority
                 search_words = leader_name_lower.replace('(', ' ').replace(')', ' ').split()
                 
-                # Build multiple search patterns
-                conditions = []
+                # First try exact matches for full name or last name
+                exact_matches = pd.DataFrame()
                 
-                # For each word in the search, check if it appears in first or last name
-                for word in search_words:
-                    if len(word) > 1:  # Skip single letters
-                        conditions.extend([
-                            leaders_df['First Name'].str.lower().str.contains(word, na=False, regex=False),
-                            leaders_df['Last Name'].str.lower().str.contains(word, na=False, regex=False)
-                        ])
+                if len(search_words) >= 2:
+                    # Try "First Last" exact match
+                    full_name_condition = (
+                        leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()
+                    ).str.contains(leader_name_lower, na=False, regex=False)
+                    exact_matches = leaders_df[full_name_condition]
+                    
+                    # If no full name match, try individual word exact matches
+                    if len(exact_matches) == 0:
+                        for word in search_words:
+                            if len(word) > 1:
+                                # Check for exact word matches in first or last name
+                                word_matches = leaders_df[
+                                    (leaders_df['First Name'].str.lower() == word) |
+                                    (leaders_df['Last Name'].str.lower() == word)
+                                ]
+                                if len(word_matches) > 0:
+                                    exact_matches = pd.concat([exact_matches, word_matches]).drop_duplicates()
                 
-                # Also try the full search term
-                conditions.extend([
-                    leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False),
-                    leaders_df['Last Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False),
-                    (leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()).str.contains(leader_name_lower, na=False, regex=False)
-                ])
-                
-                # Combine all conditions with OR
-                if conditions:
-                    combined_condition = conditions[0]
-                    for condition in conditions[1:]:
-                        combined_condition = combined_condition | condition
-                    name_matches = leaders_df[combined_condition]
+                # If we have exact matches, use those
+                if len(exact_matches) > 0:
+                    name_matches = exact_matches
                 else:
-                    name_matches = pd.DataFrame()  # Empty result
+                    # Fall back to partial matching
+                    conditions = []
+                    
+                    # For each word in the search, check if it appears in first or last name
+                    for word in search_words:
+                        if len(word) > 1:  # Skip single letters
+                            conditions.extend([
+                                leaders_df['First Name'].str.lower().str.contains(word, na=False, regex=False),
+                                leaders_df['Last Name'].str.lower().str.contains(word, na=False, regex=False)
+                            ])
+                    
+                    # Also try the full search term
+                    conditions.extend([
+                        leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False),
+                        leaders_df['Last Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False),
+                        (leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()).str.contains(leader_name_lower, na=False, regex=False)
+                    ])
+                    
+                    # Combine all conditions with OR
+                    if conditions:
+                        combined_condition = conditions[0]
+                        for condition in conditions[1:]:
+                            combined_condition = combined_condition | condition
+                        name_matches = leaders_df[combined_condition]
+                    else:
+                        name_matches = pd.DataFrame()  # Empty result
                 
                 if len(name_matches) > 0:
                     # Get the email and find assignments
