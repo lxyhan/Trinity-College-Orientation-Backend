@@ -30,6 +30,22 @@ def load_data():
     try:
         # Get the base directory (project root)
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        print(f"🔍 Base directory: {base_dir}")
+        print(f"📁 Current working directory: {os.getcwd()}")
+        print(f"📄 Looking for files in: {base_dir}")
+        
+        # Check if files exist
+        csv_files = [
+            "enhanced_orientation_assignments_leader_assignments.csv",
+            "enhanced_orientation_assignments_event_staffing.csv", 
+            "enhanced_orientation_assignments_summary.csv",
+            "enhanced_orientation_assignments_meal_eligibility.csv"
+        ]
+        
+        for csv_file in csv_files:
+            file_path = os.path.join(base_dir, csv_file)
+            exists = os.path.exists(file_path)
+            print(f"📋 {csv_file}: {'✅ EXISTS' if exists else '❌ MISSING'} at {file_path}")
         
         # Load all four CSV files from project root (enhanced versions)
         assignments_df = pd.read_csv(os.path.join(base_dir, "enhanced_orientation_assignments_leader_assignments.csv"))
