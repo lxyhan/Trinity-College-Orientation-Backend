@@ -137,8 +137,28 @@ async def root():
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
+    import glob
+    
+    # List files in current directory and parent
+    current_files = []
+    try:
+        current_files = glob.glob("*")[:20]  # Limit to first 20 files
+    except:
+        current_files = ["error listing files"]
+        
+    parent_files = []
+    try:
+        parent_files = glob.glob("../*")[:20]  # Limit to first 20 files  
+    except:
+        parent_files = ["error listing parent files"]
+    
     return {
         "status": "healthy",
+        "environment": {
+            "cwd": os.getcwd(),
+            "current_files": current_files,
+            "parent_files": parent_files
+        },
         "data_loaded": {
             "assignments": assignments_df is not None,
             "events": events_df is not None,
