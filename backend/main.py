@@ -30,10 +30,10 @@ def load_data():
     try:
         # Get the base directory - try multiple possible locations
         possible_base_dirs = [
+            ".",  # Current directory (backend/ on Railway)
             os.path.dirname(os.path.dirname(os.path.abspath(__file__))),  # From backend/ -> project root
             os.getcwd(),  # Current working directory 
             os.path.dirname(os.getcwd()),  # Parent of current directory
-            ".",  # Current directory
             ".."  # Parent directory
         ]
         
@@ -89,10 +89,10 @@ def load_data():
 def get_base_dir():
     # Try to find the directory with CSV files
     possible_base_dirs = [
+        ".",  # Current directory (backend/ on Railway)
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),  # From backend/ -> project root
         os.getcwd(),  # Current working directory 
         os.path.dirname(os.getcwd()),  # Parent of current directory
-        ".",  # Current directory
         ".."  # Parent directory
     ]
     
