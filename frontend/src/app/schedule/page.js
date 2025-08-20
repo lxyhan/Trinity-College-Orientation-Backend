@@ -121,6 +121,8 @@ const ScheduleCalendar = () => {
           setSelectedMobileDay={setSelectedMobileDay}
           viewMode={viewMode}
           onSidebarToggle={handleSidebarToggle}
+          leaderData={leaderData}
+          userName={userName}
         />
         
         {/* Desktop Sidebar */}

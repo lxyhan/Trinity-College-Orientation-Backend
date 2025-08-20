@@ -11,7 +11,7 @@ const ScheduleHeader = ({
   setShowViewMenu
 }) => {
   return (
-    <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
+    <header className="hidden sm:flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
       <div>
         <h1 className="text-base font-semibold text-gray-900">
           <time dateTime={currentDate.toISOString()}>
@@ -30,7 +30,7 @@ const ScheduleHeader = ({
       </div>
       
       <div className="flex items-center gap-4">
-        <div className="hidden md:flex md:items-center">
+        <div className="flex items-center">
           <div className="relative">
             <button
               type="button"

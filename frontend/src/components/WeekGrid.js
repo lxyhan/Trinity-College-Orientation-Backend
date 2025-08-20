@@ -10,7 +10,9 @@ const WeekGrid = ({
   selectedMobileDay, 
   setSelectedMobileDay,
   viewMode = 'week',
-  onSidebarToggle
+  onSidebarToggle,
+  leaderData,
+  userName
 }) => {
   const today = new Date();
 
@@ -25,6 +27,8 @@ const WeekGrid = ({
             setSelectedMobileDay={setSelectedMobileDay}
             weekDates={weekDates}
             onSidebarToggle={onSidebarToggle}
+            leaderData={leaderData}
+            userName={userName}
           />
 
           {/* Desktop header */}
