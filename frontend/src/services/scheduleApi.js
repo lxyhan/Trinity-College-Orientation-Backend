@@ -74,7 +74,7 @@ export const createEvent = async (eventData, userName) => {
 };
 
 /**
- * Extract events from user data response
+ * Extract events from user data response, including meal eligibility
  */
 export const extractEventsFromUserData = (userData) => {
   console.log('🔍 Raw user data received:', userData);
@@ -83,6 +83,7 @@ export const extractEventsFromUserData = (userData) => {
   
   let events = [];
   
+  // Extract work events
   if (userData.events) {
     events = userData.events;
     console.log('📅 Found events in userData.events:', events);
@@ -108,8 +109,44 @@ export const extractEventsFromUserData = (userData) => {
     });
   }
   
-  console.log('📅 Final events array:', events);
+  // Add meal eligibility as special events
+  if (userData.meal_eligibility && Array.isArray(userData.meal_eligibility)) {
+    console.log('🍽️ Found meal eligibility:', userData.meal_eligibility);
+    
+    const mealEvents = userData.meal_eligibility.map(meal => ({
+      event_name: meal.meal_name,
+      date: meal.date,
+      start_time: meal.start_time,
+      end_time: meal.end_time,
+      duration_hours: calculateMealDuration(meal.start_time, meal.end_time),
+      location: meal.location,
+      is_meal: true,
+      is_eligible: true,
+      reason: meal.reason
+    }));
+    
+    events = [...events, ...mealEvents];
+    console.log('🍽️ Added meal events, total events now:', events.length);
+  }
+  
+  console.log('📅 Final events array (including meals):', events);
   console.log('📅 Events length:', events.length);
   
   return events;
 };
+
+/**
+ * Helper function to calculate meal duration
+ */
+function calculateMealDuration(startTime, endTime) {
+  try {
+    const start = new Date(`2000-01-01 ${startTime}`);
+    const end = new Date(`2000-01-01 ${endTime}`);
+    const diffMs = end - start;
+    const diffHours = diffMs / (1000 * 60 * 60);
+    return diffHours;
+  } catch (error) {
+    console.warn('Error calculating meal duration:', error);
+    return 1; // Default to 1 hour
+  }
+}

@@ -145,9 +145,10 @@ export default function LoginPage() {
               <div className="mt-4">
                 <button
                   type="button"
+                  onClick={() => router.push('/dashboard')}
                   className="flex w-full justify-center rounded-md bg-gray-600 px-3 py-2 text-sm/6 font-semibold text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
                 >
-                  Executive Login
+                  📊 Executive Dashboard
                 </button>
               </div>
             </div>
@@ -200,7 +201,7 @@ export default function LoginPage() {
         </div>
       </div>
       <div className="relative hidden w-0 flex-1 lg:flex lg:items-center lg:justify-center lg:pl-4 lg:pr-16">
-        <img src="/Schedule.png" className="max-h-full max-w-full object-contain border-2 border-black" />
+        <img src="/schedule.png" className="max-h-full max-w-full object-contain border-2 border-black" />
       </div>
     </div>
   );

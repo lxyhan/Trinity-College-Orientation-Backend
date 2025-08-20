@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "cd api && python -m uvicorn index:app --host 0.0.0.0 --port $PORT"
+startCommand = "cd backend && python -m uvicorn main:app --host 0.0.0.0 --port $PORT"
 
 [env]
 PORT = "8000"

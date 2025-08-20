@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchUserData, createEvent, extractEventsFromUserData } from '../services/scheduleApi';
+import { apiService } from '../services/api';
 import { filterEventsForDate } from '../utils/dateUtils';
 
 export const useScheduleData = () => {
@@ -20,20 +21,40 @@ export const useScheduleData = () => {
       const storedUserName = localStorage.getItem('userName') || 'Adrian Cheng';
       setUserName(storedUserName);
 
-      // Fetch data from the lookup endpoint
-      const userData = await fetchUserData(storedUserName);
+      // Fetch leader data and enriched events concurrently
+      const [userData, enrichedEvents] = await Promise.all([
+        fetchUserData(storedUserName),
+        apiService.getEventsWithStaffing()
+      ]);
+      
       setLeaderData(userData);
       
-      // Extract events from the lookup response
-      const events = extractEventsFromUserData(userData);
-      setEvents(events);
+      // Extract user's personal events from lookup and merge with enriched event data
+      const userEvents = extractEventsFromUserData(userData);
       
-      const filtered = filterEventsForDate(events);
+      // Merge user events with enriched events (add staffing info to user events)
+      const eventsWithStaffing = userEvents.map(userEvent => {
+        const enrichedEvent = enrichedEvents.find(e => e.Event === userEvent.event_name);
+        return {
+          ...userEvent,
+          ...enrichedEvent,
+          // Preserve user-specific fields
+          event_name: userEvent.event_name,
+          start_time: userEvent.start_time,
+          end_time: userEvent.end_time,
+          date: userEvent.date,
+          location: userEvent.location
+        };
+      });
+      
+      setEvents(eventsWithStaffing);
+      
+      const filtered = filterEventsForDate(eventsWithStaffing);
       setFilteredEvents(filtered);
       
       // Store in localStorage for offline access
       localStorage.setItem('leaderData', JSON.stringify(userData));
-      localStorage.setItem('scheduleData', JSON.stringify({ events }));
+      localStorage.setItem('scheduleData', JSON.stringify({ events: eventsWithStaffing }));
       
     } catch (error) {
       console.error('Error loading data:', error);

@@ -15,9 +15,9 @@ A FastAPI backend service that serves orientation leader assignments, event staf
 
 The API serves data from three main CSV files:
 
-1. **`orientation_assignments_event_staffing.csv`** - Event details, staffing requirements, and coverage
-2. **`orientation_assignments_leader_assignments.csv`** - Individual leader assignments and schedules
-3. **`orientation_assignments_summary.csv`** - Summary statistics and metrics
+1. **`enhanced_orientation_assignments_event_staffing.csv`** - Event details, staffing requirements, and coverage with event type indicators
+2. **`enhanced_orientation_assignments_leader_assignments.csv`** - Individual leader assignments and schedules with meal eligibility
+3. **`enhanced_orientation_assignments_summary.csv`** - Summary statistics and metrics with continuity scores
 
 ## Installation
 

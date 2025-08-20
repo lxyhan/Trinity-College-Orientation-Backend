@@ -28,10 +28,20 @@ app.add_middleware(
 def load_data():
     """Load the orientation data from CSV files"""
     try:
-        # Load all three CSV files from parent directory
-        assignments_df = pd.read_csv("../orientation_assignments_leader_assignments.csv")
-        events_df = pd.read_csv("../orientation_assignments_event_staffing.csv")
-        summary_df = pd.read_csv("../orientation_assignments_summary.csv")
+        # Get the base directory (project root)
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        
+        # Load all four CSV files from project root (enhanced versions)
+        assignments_df = pd.read_csv(os.path.join(base_dir, "enhanced_orientation_assignments_leader_assignments.csv"))
+        events_df = pd.read_csv(os.path.join(base_dir, "enhanced_orientation_assignments_event_staffing.csv"))
+        summary_df = pd.read_csv(os.path.join(base_dir, "enhanced_orientation_assignments_summary.csv"))
+        
+        # Load meal eligibility data
+        try:
+            meal_eligibility_df = pd.read_csv(os.path.join(base_dir, "enhanced_orientation_assignments_meal_eligibility.csv"))
+        except Exception as e:
+            print(f"Warning: Could not load meal eligibility data: {e}")
+            meal_eligibility_df = None
         
         # Load the original orientation schedule for additional details
         try:
@@ -39,13 +49,17 @@ def load_data():
         except ImportError:
             ORIENTATION_EVENTS = {}
         
-        return assignments_df, events_df, summary_df, ORIENTATION_EVENTS
+        return assignments_df, events_df, summary_df, meal_eligibility_df, ORIENTATION_EVENTS
     except Exception as e:
         print(f"Error loading data: {e}")
-        return None, None, None, {}
+        return None, None, None, None, {}
+
+# Helper function to get base directory
+def get_base_dir():
+    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Load data at startup
-assignments_df, events_df, summary_df, orientation_events = load_data()
+assignments_df, events_df, summary_df, meal_eligibility_df, orientation_events = load_data()
 
 @app.get("/")
 async def root():
@@ -74,7 +88,8 @@ async def health_check():
         "data_loaded": {
             "assignments": assignments_df is not None,
             "events": events_df is not None,
-            "summary": summary_df is not None
+            "summary": summary_df is not None,
+            "meal_eligibility": meal_eligibility_df is not None
         }
     }
 
@@ -176,7 +191,7 @@ async def get_all_leaders():
     
     # Add names if available
     try:
-        leaders_df = pd.read_csv("../Trinity College Orientation Leaders 2025(Simplified).csv")
+        leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
         leader_stats = leader_stats.merge(
             leaders_df[['Email', 'First Name', 'Last Name']], 
             left_on='email', 
@@ -200,16 +215,38 @@ async def get_all_leaders():
 
 @app.get("/api/events")
 async def get_all_events():
-    """Get a list of all events with staffing information"""
+    """Get a list of all events with staffing information and event type details"""
     if events_df is None:
         raise HTTPException(status_code=500, detail="Event data not loaded")
     
     # Sort by date and time for better organization
     events_sorted = events_df.sort_values(['Time Slot', 'Event'])
     
+    # Enrich events with type information from orientation_schedule.py
+    enriched_events = []
+    for _, event_row in events_sorted.iterrows():
+        event_dict = event_row.to_dict()
+        event_name = event_dict['Event']
+        
+        # Get additional event details from orientation schedule
+        event_details = orientation_events.get(event_name, {})
+        
+        # Add type information
+        event_dict['is_meal'] = event_details.get('is_meal', False)
+        event_dict['is_indoor'] = event_details.get('is_indoor', False)
+        event_dict['is_outdoor'] = event_details.get('is_outdoor', False)
+        event_dict['is_core'] = event_details.get('is_core', False)
+        event_dict['location'] = event_details.get('location', '')
+        event_dict['date'] = event_details.get('date', '')
+        event_dict['start_time'] = event_details.get('start_time', '')
+        event_dict['end_time'] = event_details.get('end_time', '')
+        event_dict['event_name'] = event_name  # Add event_name field for consistency
+        
+        enriched_events.append(event_dict)
+    
     return {
-        "total_events": len(events_sorted),
-        "events": events_sorted.to_dict('records')
+        "total_events": len(enriched_events),
+        "events": enriched_events
     }
 
 @app.get("/api/lookup/{leader_name}")
@@ -237,7 +274,7 @@ async def lookup_leader_schedule(leader_name: str):
     # If no matches by email, try by name in the original data
     if len(leader_assignments) == 0:
         try:
-            leaders_df = pd.read_csv("../Trinity College Orientation Leaders 2025(Simplified).csv")
+            leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
             # Find leader by name
             name_matches = leaders_df[
                 (leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False)) |
@@ -265,7 +302,7 @@ async def lookup_leader_schedule(leader_name: str):
     
     # Get leader details from original data
     try:
-        leaders_df = pd.read_csv("../Trinity College Orientation Leaders 2025(Simplified).csv")
+        leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
         leader_info = leaders_df[leaders_df['Email'] == leader_email].iloc[0]
         leader_full_name = f"{leader_info['First Name']} {leader_info['Last Name']}"
     except:
@@ -296,12 +333,36 @@ async def lookup_leader_schedule(leader_name: str):
     # Sort events by date and time
     events.sort(key=lambda x: (x['date'], x['start_time']))
     
+    # Get meal eligibility for this leader
+    meal_eligibility = []
+    if meal_eligibility_df is not None:
+        eligible_meals = meal_eligibility_df[
+            meal_eligibility_df['Eligible Leader'] == leader_email
+        ]
+        for _, meal_row in eligible_meals.iterrows():
+            # Get meal details from orientation events
+            meal_name = meal_row['Meal Event']
+            meal_details = orientation_events.get(meal_name, {})
+            
+            meal_eligibility.append({
+                "meal_name": meal_name,
+                "date": meal_details.get('date', 'Unknown'),
+                "start_time": meal_details.get('start_time', 'Unknown'),
+                "end_time": meal_details.get('end_time', 'Unknown'),
+                "location": meal_details.get('location', 'Unknown'),
+                "reason": meal_row['Reason']
+            })
+    
+    # Sort meals by date and time
+    meal_eligibility.sort(key=lambda x: (x['date'], x['start_time']))
+    
     return {
         "leader_name": leader_full_name,
         "leader_email": leader_email,
         "total_events": len(events),
         "total_hours": sum(event['duration_hours'] for event in events),
-        "events": events
+        "events": events,
+        "meal_eligibility": meal_eligibility
     }
 
 @app.get("/api/event/{event_name}/leaders")
@@ -359,7 +420,7 @@ async def get_event_leaders(event_name: str):
     # Build leader list with details
     leaders = []
     try:
-        leaders_df = pd.read_csv("../Trinity College Orientation Leaders 2025(Simplified).csv")
+        leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
         
         for _, assignment in event_assignments.iterrows():
             leader_email = assignment['Leader Email']
@@ -428,7 +489,7 @@ async def get_leader_details(leader_email: str):
     
     # Get leader details
     try:
-        leaders_df = pd.read_csv("../Trinity College Orientation Leaders 2025(Simplified).csv")
+        leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
         leader_info = leaders_df[leaders_df['Email'] == leader_email]
         if len(leader_info) > 0:
             leader_details = leader_info.iloc[0].to_dict()

@@ -136,8 +136,8 @@ const EventSidebar = ({ events, leaderData }) => {
   const isEventCheckedIn = nextEvent && isCheckedIn(nextEvent);
 
   return (
-    <div className="w-80 bg-white border-l border-gray-200 flex-shrink-0">
-      <div className="p-6">
+    <div className="w-80 bg-white border-l border-gray-200 flex-shrink-0 flex flex-col">
+      <div className="p-6 flex-1">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Next Event</h2>
         
         {nextEvent ? (
@@ -246,6 +246,28 @@ const EventSidebar = ({ events, leaderData }) => {
               hour12: true 
             })}
           </p>
+        </div>
+      </div>
+      
+      {/* Image Space - 30% of sidebar height */}
+      <div className="w-full bg-gray-50 border-t border-gray-200" style={{ height: '30%', minHeight: '200px' }}>
+        <div className="h-full flex items-center justify-center p-4">
+          <img 
+            src="/sidebar-image.png" 
+            alt="Trinity College"
+            className="max-w-full max-h-full object-contain"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+          {/* Fallback when image is not available */}
+          <div className="text-center text-gray-400 hidden flex-col items-center justify-center h-full">
+            <div className="text-2xl mb-2">🏛️</div>
+            <div className="text-sm font-medium">Trinity College</div>
+            <div className="text-xs">Image Space</div>
+            <div className="text-xs mt-2 text-gray-300">Add sidebar-image.png to public folder</div>
+          </div>
         </div>
       </div>
     </div>

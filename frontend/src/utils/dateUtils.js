@@ -26,7 +26,7 @@ export const timeToGridRow = (timeString) => {
 export const calculateDuration = (startTime, endTime) => {
   const startRow = timeToGridRow(startTime);
   const endRow = timeToGridRow(endTime);
-  return Math.max(endRow - startRow, 6); // Minimum 6 rows (30 minutes)
+  return endRow - startRow; // No minimum duration - show actual event times
 };
 
 /**
@@ -100,15 +100,50 @@ export const getMobileEvents = (filteredEvents, selectedMobileDay, weekDates) =>
 };
 
 /**
- * Generate color class for events based on index
+ * Generate color class for events based on event type
  */
-export const getEventColorClass = (index) => {
-  const colors = [
-    'bg-blue-50 text-blue-700 hover:bg-blue-100',
-    'bg-pink-50 text-pink-700 hover:bg-pink-100',
-    'bg-green-50 text-green-700 hover:bg-green-100',
-    'bg-yellow-50 text-yellow-700 hover:bg-yellow-100',
-    'bg-purple-50 text-purple-700 hover:bg-purple-100',
-  ];
-  return colors[index % colors.length];
+export const getEventColorClass = (event) => {
+  // Default color for unknown/unclassified events
+  const defaultColor = 'bg-slate-100 text-slate-700 hover:bg-slate-200';
+  
+  if (!event) return defaultColor;
+  
+  // Modern, appealing color classes with good contrast:
+  // All events use white text with hover effects
+  if (event.is_meal || event.is_indoor || event.is_outdoor) {
+    return 'text-white hover:opacity-90 hover:shadow-md transition-all duration-200';
+  }
+  
+  return defaultColor;
+};
+
+/**
+ * Get background color style for events based on event type (custom color scheme)
+ */
+export const getEventBackgroundColor = (event) => {
+  if (!event) return '#f8fafc'; // Light blue-gray
+  
+  // Custom color scheme:
+  // 1. Meals - warm orange (unchanged)
+  if (event.is_meal) {
+    return '#10b981'; // Emerald-500 (green)
+  }
+  
+  // 2. Indoor events - dark purple
+  if (event.is_indoor && !event.is_outdoor) {
+    return '#7c3aed'; // Violet-600 (dark purple)
+  }
+  
+  // 3. Outdoor events - light purple
+  if (event.is_outdoor && !event.is_indoor) {
+    return '#a855f7'; // Purple-500 (light purple)
+  }
+  
+  // 4. Mixed indoor/outdoor events - medium purple
+  if (event.is_indoor && event.is_outdoor) {
+    return '#8b5cf6'; // Violet-500 (medium purple)
+  }
+  
+  // 5. Default events - green
+  return '#10b981'; // Emerald-500 (green)
 };

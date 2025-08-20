@@ -56,6 +56,53 @@ export const apiService = {
     }
   },
 
+  // Get events with enriched staffing data
+  async getEventsWithStaffing() {
+    try {
+      const [events, staffingData] = await Promise.all([
+        this.getEvents(),
+        this.getEventStaffing()
+      ]);
+
+      // Create a map of event names to staffing data for quick lookup
+      const staffingMap = new Map();
+      staffingData.forEach(staffingEvent => {
+        staffingMap.set(staffingEvent.Event, staffingEvent);
+      });
+
+      // Enrich events with staffing data
+      const enrichedEvents = events.map(event => {
+        const eventName = event.Event;
+        const staffing = staffingMap.get(eventName);
+        
+        return {
+          ...event,
+          staffing: staffing ? {
+            leadersNeeded: staffing['Leaders Needed'],
+            leadersAssigned: staffing['Leaders Assigned'],
+            staffingPercentage: staffing['Staffing Percentage'],
+            fullyStaffed: staffing['Fully Staffed'],
+            eventType: staffing['Event Type'], // Contains emoji indicators
+            status: this.getStaffingStatus(staffing['Staffing Percentage'], staffing['Fully Staffed'])
+          } : null
+        };
+      });
+
+      return enrichedEvents;
+    } catch (error) {
+      console.error('Error fetching events with staffing:', error);
+      return [];
+    }
+  },
+
+  // Helper function to determine staffing status
+  getStaffingStatus(staffingPercentage, fullyStaffed) {
+    if (fullyStaffed) return 'fully_staffed';
+    if (staffingPercentage < 50) return 'critical';
+    if (staffingPercentage < 80) return 'understaffed';
+    return 'good';
+  },
+
   // Get summary statistics
   async getSummary() {
     try {
