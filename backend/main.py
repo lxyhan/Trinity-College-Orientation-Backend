@@ -255,115 +255,124 @@ async def lookup_leader_schedule(leader_name: str):
     Look up a leader's scheduled events by name.
     
     Args:
-        leader_name: The name of the leader (can be first name, last name, or full name) w
+        leader_name: The name of the leader (can be first name, last name, or full name)
     
     Returns:
         List of scheduled events with details
     """
-    if assignments_df is None or events_df is None:
-        raise HTTPException(status_code=500, detail="Data not loaded")
-    
-    # Search for the leader by name (case-insensitive)
-    leader_name_lower = leader_name.lower()
-    
-    # Try to find the leader by email (most reliable)
-    leader_assignments = assignments_df[
-        assignments_df['Leader Email'].str.lower().str.contains(leader_name_lower, na=False)
-    ]
-    
-    # If no matches by email, try by name in the original data
-    if len(leader_assignments) == 0:
+    try:
+        if assignments_df is None or events_df is None:
+            raise HTTPException(status_code=500, detail="Data not loaded")
+        
+        # Search for the leader by name (case-insensitive)
+        leader_name_lower = leader_name.lower()
+        
+        # Try to find the leader by email (most reliable)
+        leader_assignments = assignments_df[
+            assignments_df['Leader Email'].str.lower().str.contains(leader_name_lower, na=False)
+        ]
+        
+        # If no matches by email, try by name in the original data
+        if len(leader_assignments) == 0:
+            try:
+                leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
+                # Find leader by name
+                name_matches = leaders_df[
+                    (leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False)) |
+                    (leaders_df['Last Name'].str.lower().str.contains(leader_name_lower, na=False)) |
+                    (leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()).str.contains(leader_name_lower, na=False)
+                ]
+                
+                if len(name_matches) > 0:
+                    # Get the email and find assignments
+                    leader_email = name_matches.iloc[0]['Email']
+                    leader_assignments = assignments_df[
+                        assignments_df['Leader Email'] == leader_email
+                    ]
+            except Exception as e:
+                print(f"Error searching by name: {e}")
+        
+        if len(leader_assignments) == 0:
+            raise HTTPException(
+                status_code=404, 
+                detail=f"No leader found with name containing '{leader_name}'"
+            )
+        
+        # Get the leader's email for additional info
+        leader_email = leader_assignments.iloc[0]['Leader Email']
+        
+        # Get leader details from original data
         try:
             leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
-            # Find leader by name
-            name_matches = leaders_df[
-                (leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False)) |
-                (leaders_df['Last Name'].str.lower().str.contains(leader_name_lower, na=False)) |
-                (leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()).str.contains(leader_name_lower, na=False)
-            ]
-            
-            if len(name_matches) > 0:
-                # Get the email and find assignments
-                leader_email = name_matches.iloc[0]['Email']
-                leader_assignments = assignments_df[
-                    assignments_df['Leader Email'] == leader_email
-                ]
-        except Exception as e:
-            print(f"Error searching by name: {e}")
-    
-    if len(leader_assignments) == 0:
-        raise HTTPException(
-            status_code=404, 
-            detail=f"No leader found with name containing '{leader_name}'"
-        )
-    
-    # Get the leader's email for additional info
-    leader_email = leader_assignments.iloc[0]['Leader Email']
-    
-    # Get leader details from original data
-    try:
-        leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
-        leader_info = leaders_df[leaders_df['Email'] == leader_email].iloc[0]
-        leader_full_name = f"{leader_info['First Name']} {leader_info['Last Name']}"
-    except:
-        leader_full_name = leader_email
-    
-    # Build the response with event details
-    events = []
-    for _, assignment in leader_assignments.iterrows():
-        event_name = assignment['Event']
-        date = assignment['Date']
-        start_time = assignment['Start Time']
-        end_time = assignment['End Time']
-        hours = assignment['Hours']
+            leader_info = leaders_df[leaders_df['Email'] == leader_email].iloc[0]
+            leader_full_name = f"{leader_info['First Name']} {leader_info['Last Name']}"
+        except:
+            leader_full_name = leader_email
         
-        # Get location and other details from orientation events
-        event_details = orientation_events.get(event_name, {})
-        location = event_details.get('location', 'Location not specified')
-        
-        events.append({
-            "event_name": event_name,
-            "date": date,
-            "start_time": start_time,
-            "end_time": end_time,
-            "duration_hours": hours,
-            "location": location
-        })
-    
-    # Sort events by date and time
-    events.sort(key=lambda x: (x['date'], x['start_time']))
-    
-    # Get meal eligibility for this leader
-    meal_eligibility = []
-    if meal_eligibility_df is not None:
-        eligible_meals = meal_eligibility_df[
-            meal_eligibility_df['Eligible Leader'] == leader_email
-        ]
-        for _, meal_row in eligible_meals.iterrows():
-            # Get meal details from orientation events
-            meal_name = meal_row['Meal Event']
-            meal_details = orientation_events.get(meal_name, {})
+        # Build the response with event details
+        events = []
+        for _, assignment in leader_assignments.iterrows():
+            event_name = assignment['Event']
+            date = assignment['Date']
+            start_time = assignment['Start Time']
+            end_time = assignment['End Time']
+            hours = assignment['Hours']
             
-            meal_eligibility.append({
-                "meal_name": meal_name,
-                "date": meal_details.get('date', 'Unknown'),
-                "start_time": meal_details.get('start_time', 'Unknown'),
-                "end_time": meal_details.get('end_time', 'Unknown'),
-                "location": meal_details.get('location', 'Unknown'),
-                "reason": meal_row['Reason']
+            # Get location and other details from orientation events
+            event_details = orientation_events.get(event_name, {})
+            location = event_details.get('location', 'Location not specified')
+            
+            events.append({
+                "event_name": event_name,
+                "date": date,
+                "start_time": start_time,
+                "end_time": end_time,
+                "duration_hours": hours,
+                "location": location
             })
-    
-    # Sort meals by date and time
-    meal_eligibility.sort(key=lambda x: (x['date'], x['start_time']))
-    
-    return {
-        "leader_name": leader_full_name,
-        "leader_email": leader_email,
-        "total_events": len(events),
-        "total_hours": sum(event['duration_hours'] for event in events),
-        "events": events,
-        "meal_eligibility": meal_eligibility
-    }
+        
+        # Sort events by date and time
+        events.sort(key=lambda x: (x['date'], x['start_time']))
+        
+        # Get meal eligibility for this leader
+        meal_eligibility = []
+        if meal_eligibility_df is not None:
+            eligible_meals = meal_eligibility_df[
+                meal_eligibility_df['Eligible Leader'] == leader_email
+            ]
+            for _, meal_row in eligible_meals.iterrows():
+                # Get meal details from orientation events
+                meal_name = meal_row['Meal Event']
+                meal_details = orientation_events.get(meal_name, {})
+                
+                meal_eligibility.append({
+                    "meal_name": meal_name,
+                    "date": meal_details.get('date', 'Unknown'),
+                    "start_time": meal_details.get('start_time', 'Unknown'),
+                    "end_time": meal_details.get('end_time', 'Unknown'),
+                    "location": meal_details.get('location', 'Unknown'),
+                    "reason": meal_row['Reason']
+                })
+        
+        # Sort meals by date and time
+        meal_eligibility.sort(key=lambda x: (x['date'], x['start_time']))
+        
+        return {
+            "leader_name": leader_full_name,
+            "leader_email": leader_email,
+            "total_events": len(events),
+            "total_hours": sum(event['duration_hours'] for event in events),
+            "events": events,
+            "meal_eligibility": meal_eligibility
+        }
+    except Exception as e:
+        print(f"Error in lookup_leader_schedule for '{leader_name}': {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Internal server error while looking up leader '{leader_name}': {str(e)}"
+        )
 
 @app.get("/api/event/{event_name}/leaders")
 async def get_event_leaders(event_name: str):
