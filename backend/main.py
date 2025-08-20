@@ -59,7 +59,14 @@ def get_base_dir():
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Load data at startup
+print("🚀 Starting data loading...")
 assignments_df, events_df, summary_df, meal_eligibility_df, orientation_events = load_data()
+print(f"📊 Data loaded: assignments={assignments_df is not None}, events={events_df is not None}, meal_eligibility={meal_eligibility_df is not None}")
+if assignments_df is not None:
+    print(f"📈 Assignments shape: {assignments_df.shape}")
+if events_df is not None:
+    print(f"📅 Events shape: {events_df.shape}")
+print(f"🍽️ Orientation events loaded: {len(orientation_events)} events")
 
 @app.get("/")
 async def root():
@@ -84,12 +91,18 @@ async def root():
 async def health_check():
     """Health check endpoint"""
     return {
-        "status": "healthy", 
+        "status": "healthy",
         "data_loaded": {
             "assignments": assignments_df is not None,
             "events": events_df is not None,
-            "summary": summary_df is not None,
-            "meal_eligibility": meal_eligibility_df is not None
+            "meal_eligibility": meal_eligibility_df is not None,
+            "orientation_events": len(orientation_events) > 0
+        },
+        "data_counts": {
+            "assignments": len(assignments_df) if assignments_df is not None else 0,
+            "events": len(events_df) if events_df is not None else 0,
+            "meal_eligibility": len(meal_eligibility_df) if meal_eligibility_df is not None else 0,
+            "orientation_events": len(orientation_events)
         }
     }
 
