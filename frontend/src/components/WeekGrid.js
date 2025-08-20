@@ -9,13 +9,14 @@ const WeekGrid = ({
   events,
   selectedMobileDay, 
   setSelectedMobileDay,
-  viewMode = 'week'
+  viewMode = 'week',
+  onSidebarToggle
 }) => {
   const today = new Date();
 
   return (
     <div className="isolate flex flex-auto flex-col overflow-auto bg-white">
-      <div style={{ width: '165%' }} className="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full">
+      <div className="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full" style={{ width: viewMode === 'week' ? '165%' : '100%' }}>
         {/* Week header */}
         <div className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black/5 sm:pr-8">
           <MobileDayView
@@ -23,6 +24,7 @@ const WeekGrid = ({
             selectedMobileDay={selectedMobileDay}
             setSelectedMobileDay={setSelectedMobileDay}
             weekDates={weekDates}
+            onSidebarToggle={onSidebarToggle}
           />
 
           {/* Desktop header */}

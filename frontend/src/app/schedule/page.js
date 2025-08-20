@@ -12,6 +12,7 @@ const ScheduleCalendar = () => {
   const [viewMode, setViewMode] = useState('week');
   const [showViewMenu, setShowViewMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
 
   const {
     userName,
@@ -58,6 +59,10 @@ const ScheduleCalendar = () => {
   }
 
   const weekDates = getWeekDates(currentDate);
+
+  const handleSidebarToggle = () => {
+    setShowMobileSidebar(!showMobileSidebar);
+  };
 
   return (
     <div className="flex h-full flex-col">
@@ -115,11 +120,23 @@ const ScheduleCalendar = () => {
           selectedMobileDay={selectedMobileDay}
           setSelectedMobileDay={setSelectedMobileDay}
           viewMode={viewMode}
+          onSidebarToggle={handleSidebarToggle}
         />
         
+        {/* Desktop Sidebar */}
         <EventSidebar
           events={events}
           leaderData={leaderData}
+          isMobile={false}
+        />
+        
+        {/* Mobile Sidebar */}
+        <EventSidebar
+          events={events}
+          leaderData={leaderData}
+          isMobile={true}
+          isOpen={showMobileSidebar}
+          onClose={() => setShowMobileSidebar(false)}
         />
       </div>
     </div>

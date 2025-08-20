@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ClockIcon, MapPinIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
-const EventSidebar = ({ events, leaderData }) => {
+const EventSidebar = ({ events, leaderData, isMobile = false, isOpen = true, onClose }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [checkedInEvents, setCheckedInEvents] = useState(new Set());
 
@@ -136,9 +136,39 @@ const EventSidebar = ({ events, leaderData }) => {
   const isEventCheckedIn = nextEvent && isCheckedIn(nextEvent);
 
   return (
-    <div className="w-80 bg-white border-l border-gray-200 flex-shrink-0 flex flex-col">
-      <div className="p-6 flex-1">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Next Event</h2>
+    <>
+      {/* Mobile Overlay */}
+      {isMobile && isOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 sm:hidden"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div className={`
+        ${isMobile ? 
+          `fixed top-0 right-0 h-full w-80 bg-white transform transition-transform duration-300 ease-in-out z-50 sm:hidden ${
+            isOpen ? 'translate-x-0' : 'translate-x-full'
+          }` : 
+          'w-80 bg-white border-l border-gray-200 flex-shrink-0 hidden sm:flex'
+        } flex flex-col
+      `}>
+        {/* Mobile Header with Close Button */}
+        {isMobile && (
+          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">Event Details</h2>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+            >
+              <XMarkIcon className="h-6 w-6" />
+            </button>
+          </div>
+        )}
+        
+        <div className="p-6 flex-1">
+        <h2 className={`text-lg font-semibold text-gray-900 mb-4 ${isMobile ? 'hidden' : ''}`}>Next Event</h2>
         
         {nextEvent ? (
           <div className="space-y-4">
@@ -271,6 +301,7 @@ const EventSidebar = ({ events, leaderData }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
