@@ -255,7 +255,7 @@ async def lookup_leader_schedule(leader_name: str):
     Look up a leader's scheduled events by name.
     
     Args:
-        leader_name: The name of the leader (can be first name, last name, or full name)
+        leader_name: The name of the leader (can be first name, last name, or full name) w
     
     Returns:
         List of scheduled events with details
