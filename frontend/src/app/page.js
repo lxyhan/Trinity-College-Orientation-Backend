@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { apiService } from '../services/api';
 
 export default function LoginPage() {
@@ -201,7 +202,14 @@ export default function LoginPage() {
         </div>
       </div>
       <div className="relative hidden w-0 flex-1 lg:flex lg:items-center lg:justify-center lg:pl-4 lg:pr-16">
-        <img src="/schedule.png" alt="Trinity College Orientation Schedule" className="max-h-full max-w-full object-contain border-2 border-black" />
+        <Image 
+          src="/schedule.png" 
+          alt="Trinity College Orientation Schedule" 
+          width={2000}
+          height={1294}
+          className="max-h-full max-w-full object-contain border-2 border-black" 
+          priority
+        />
       </div>
     </div>
   );
