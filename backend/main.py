@@ -106,7 +106,7 @@ def get_base_dir():
     return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Load data at startup
-print("🚀 Starting data loading...")
+print("🚀 Starting data loading... (v2)")
 assignments_df, events_df, summary_df, meal_eligibility_df, orientation_events = load_data()
 print(f"📊 Data loaded: assignments={assignments_df is not None}, events={events_df is not None}, meal_eligibility={meal_eligibility_df is not None}")
 if assignments_df is not None:
