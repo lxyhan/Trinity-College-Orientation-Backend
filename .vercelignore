@@ -8,4 +8,4 @@ backend/DEPLOYMENT.md
 backend/examples/
 backend/test_api.py
 backend/start.sh
-frontend/
+backend/
