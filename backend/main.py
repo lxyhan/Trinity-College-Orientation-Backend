@@ -356,12 +356,40 @@ async def lookup_leader_schedule(leader_name: str):
         if len(leader_assignments) == 0:
             try:
                 leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
-                # Find leader by name
-                name_matches = leaders_df[
-                    (leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False)) |
-                    (leaders_df['Last Name'].str.lower().str.contains(leader_name_lower, na=False)) |
-                    (leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()).str.contains(leader_name_lower, na=False)
-                ]
+                # VERY LAX name matching algorithm
+                import re
+                
+                # Clean the search term - remove special chars, extra spaces
+                clean_search = re.sub(r'[^\w\s]', '', leader_name_lower).strip()
+                search_parts = [part.strip() for part in clean_search.split() if part.strip()]
+                
+                def matches_leader(row):
+                    # Get all possible name variations
+                    first_name = str(row['First Name']).lower()
+                    last_name = str(row['Last Name']).lower()
+                    
+                    # Clean names - remove special chars
+                    clean_first = re.sub(r'[^\w\s]', ' ', first_name)
+                    clean_last = re.sub(r'[^\w\s]', ' ', last_name)
+                    
+                    # Create searchable text with all variations
+                    searchable_text = f"{clean_first} {clean_last} {first_name} {last_name}"
+                    
+                    # Also add individual words from first name (for parentheses cases)
+                    first_words = re.findall(r'\w+', clean_first)
+                    searchable_text += " " + " ".join(first_words)
+                    
+                    # Very lenient matching - if ANY search part is found, it's a potential match
+                    if len(search_parts) == 1:
+                        # Single word - just check if it's anywhere in the names
+                        return search_parts[0] in searchable_text
+                    else:
+                        # Multiple words - check if most parts match (75% threshold)
+                        matches = sum(1 for part in search_parts if part in searchable_text)
+                        return matches >= max(1, len(search_parts) * 0.75)
+                
+                # Apply the very lenient matching
+                name_matches = leaders_df[leaders_df.apply(matches_leader, axis=1)]
                 
                 if len(name_matches) > 0:
                     # Get the email and find assignments
