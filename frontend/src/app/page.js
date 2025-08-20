@@ -171,7 +171,7 @@ export default function LoginPage() {
                   Get ready for an amazing orientation experience at Trinity College!
                 </p>
                 <div className="mt-3 text-xs text-gray-400">
-                  <p>Try: James, Han, or James Han</p>
+                  <p>Try: James, Han, or James Han!</p>
                 </div>
                 
                 {/* Social Links */}
