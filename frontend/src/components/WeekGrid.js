@@ -18,7 +18,7 @@ const WeekGrid = ({
   const today = new Date();
 
   return (
-    <div className="isolate flex flex-auto flex-col bg-white overflow-hidden">
+    <div className="isolate flex flex-auto flex-col bg-white">
       {/* Mobile Layout */}
       <div className="sm:hidden flex flex-col h-full">
         <MobileDayView
@@ -33,7 +33,8 @@ const WeekGrid = ({
       </div>
 
       {/* Desktop Layout */}
-      <div className="hidden sm:flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full" style={{ width: viewMode === 'week' ? '165%' : '100%' }}>
+      <div className="hidden sm:flex flex-auto flex-col overflow-auto bg-white">
+        <div className="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full" style={{ width: viewMode === 'week' ? '165%' : '100%' }}>
         {/* Week header */}
         <div className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black/5 sm:pr-8">
           {/* Desktop header */}
@@ -147,6 +148,7 @@ const WeekGrid = ({
               </li>
             </ol>
           </div>
+        </div>
         </div>
       </div>
     </div>
