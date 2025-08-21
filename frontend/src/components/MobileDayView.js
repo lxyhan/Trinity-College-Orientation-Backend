@@ -20,33 +20,36 @@ const MobileDayView = ({
     <>
       {/* Mobile header with day switcher and sidebar toggle */}
       <div className="sm:hidden">
-        {/* Top bar with sidebar toggle */}
-        <div className="px-4 py-3 border-b border-gray-200 bg-white">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-lg font-semibold text-gray-900 truncate">
-                {weekDates[selectedMobileDay]?.toLocaleDateString('en-US', { 
-                  weekday: 'long',
-                  month: 'short', 
-                  day: 'numeric' 
-                })}
-              </h1>
-              <div className="flex items-center space-x-4 mt-1">
-                <p className="text-sm text-gray-500 truncate">
-                  {leaderData?.leader_name || userName}
-                </p>
+        {/* Top bar with sidebar toggle - single row */}
+        <div className="px-4 py-2 border-b border-gray-200 bg-white">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-base font-semibold text-gray-900 truncate">
+                  {weekDates[selectedMobileDay]?.toLocaleDateString('en-US', { 
+                    weekday: 'short',
+                    month: 'short', 
+                    day: 'numeric' 
+                  })}
+                </h1>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <span className="text-xs text-gray-500 truncate max-w-20">
+                  {(leaderData?.leader_name || userName)?.split(' ')[0]}
+                </span>
                 {leaderData && (
-                  <p className="text-xs text-blue-600 flex-shrink-0">
-                    {leaderData.total_events} events • {leaderData.total_hours}h
-                  </p>
+                  <span className="text-xs text-blue-600 whitespace-nowrap">
+                    {leaderData.total_events}e
+                  </span>
                 )}
               </div>
             </div>
             <button
               onClick={onSidebarToggle}
-              className="ml-3 p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 flex-shrink-0"
+              className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 flex-shrink-0"
+              aria-label="Open sidebar"
             >
-              <Bars3Icon className="h-6 w-6" />
+              <Bars3Icon className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -80,8 +83,8 @@ const MobileDayView = ({
       </div>
 
       {/* Mobile events - simplified list with time labels */}
-      <div className="sm:hidden">
-        <div className="space-y-1 p-4">
+      <div className="sm:hidden flex-1 overflow-auto">
+        <div className="p-4 pb-20">
           {mobileEvents.length > 0 ? (
             mobileEvents
               .sort((a, b) => {
@@ -91,7 +94,7 @@ const MobileDayView = ({
                 return timeA.localeCompare(timeB);
               })
               .map((event, index) => (
-                <div key={`mobile-event-${index}`} className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 mb-3">
+                <div key={`mobile-event-${index}`} className="bg-white rounded-lg border border-gray-200 shadow-sm p-3 mb-3 last:mb-0">
                   {/* Event header with time */}
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1 min-w-0">
