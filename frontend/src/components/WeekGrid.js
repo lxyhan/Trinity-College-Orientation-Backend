@@ -19,21 +19,25 @@ const WeekGrid = ({
 
   return (
     <div className="isolate flex flex-auto flex-col bg-white overflow-hidden">
-      <div className="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full" style={{ width: viewMode === 'week' ? '165%' : '100%' }}>
+      {/* Mobile Layout */}
+      <div className="sm:hidden flex flex-col h-full">
+        <MobileDayView
+          filteredEvents={filteredEvents}
+          selectedMobileDay={selectedMobileDay}
+          setSelectedMobileDay={setSelectedMobileDay}
+          weekDates={weekDates}
+          onSidebarToggle={onSidebarToggle}
+          leaderData={leaderData}
+          userName={userName}
+        />
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden sm:flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full" style={{ width: viewMode === 'week' ? '165%' : '100%' }}>
         {/* Week header */}
         <div className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black/5 sm:pr-8">
-          <MobileDayView
-            filteredEvents={filteredEvents}
-            selectedMobileDay={selectedMobileDay}
-            setSelectedMobileDay={setSelectedMobileDay}
-            weekDates={weekDates}
-            onSidebarToggle={onSidebarToggle}
-            leaderData={leaderData}
-            userName={userName}
-          />
-
           {/* Desktop header */}
-          <div className={`-mr-px hidden divide-x divide-gray-100 border-r border-gray-100 text-sm/6 text-gray-500 sm:grid ${
+          <div className={`-mr-px divide-x divide-gray-100 border-r border-gray-100 text-sm/6 text-gray-500 grid ${
             viewMode === 'day' ? 'grid-cols-1' : 'grid-cols-7'
           }`}>
             <div className="col-end-1 w-14" />
