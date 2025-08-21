@@ -83,8 +83,8 @@ const MobileDayView = ({
       </div>
 
       {/* Mobile events - simplified list with time labels */}
-      <div className="sm:hidden flex-1 overflow-auto">
-        <div className="p-4 pb-20">
+      <div className="sm:hidden h-0 flex-1 overflow-y-auto">
+        <div className="p-4 pb-24">
           {mobileEvents.length > 0 ? (
             mobileEvents
               .sort((a, b) => {

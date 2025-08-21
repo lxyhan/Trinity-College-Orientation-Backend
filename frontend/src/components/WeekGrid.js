@@ -17,7 +17,7 @@ const WeekGrid = ({
   const today = new Date();
 
   return (
-    <div className="isolate flex flex-auto flex-col bg-white sm:overflow-auto">
+    <div className="isolate flex flex-auto flex-col bg-white overflow-hidden">
       <div className="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full" style={{ width: viewMode === 'week' ? '165%' : '100%' }}>
         {/* Week header */}
         <div className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black/5 sm:pr-8">

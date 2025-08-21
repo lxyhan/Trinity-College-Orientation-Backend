@@ -119,15 +119,50 @@ export const apiService = {
   // Get leaders for a specific event
   async getEventLeaders(eventName) {
     try {
+      // Try the path parameter approach first
       const encodedEventName = encodeURIComponent(eventName);
       const url = `${API_BASE_URL}/api/event/${encodedEventName}/leaders`;
       console.log(`🔍 Fetching leaders for event: "${eventName}" -> ${url}`);
       
       const response = await fetch(url);
       if (!response.ok) {
-        console.warn(`⚠️ Failed to fetch event leaders for "${eventName}": ${response.status} ${response.statusText}`);
-        throw new Error('Failed to fetch event leaders');
+        console.warn(`⚠️ Path parameter failed for "${eventName}": ${response.status}, trying fallback approach`);
+        
+        // Fallback: Use leader-assignments endpoint with event filter
+        const fallbackUrl = `${API_BASE_URL}/api/leader-assignments?event=${encodeURIComponent(eventName)}`;
+        console.log(`🔄 Fallback URL: ${fallbackUrl}`);
+        
+        const fallbackResponse = await fetch(fallbackUrl);
+        if (!fallbackResponse.ok) {
+          throw new Error('Both approaches failed to fetch event leaders');
+        }
+        
+        const fallbackData = await fallbackResponse.json();
+        
+        // Transform the data to match the expected format
+        const leaders = fallbackData.assignments.map(assignment => ({
+          name: assignment['Leader Email'].split('@')[0], // Use email username as name
+          first_name: assignment['Leader Email'].split('@')[0],
+          last_name: '',
+          email: assignment['Leader Email']
+        }));
+        
+        // Remove duplicates by email
+        const uniqueLeaders = leaders.reduce((acc, leader) => {
+          if (!acc.some(l => l.email === leader.email)) {
+            acc.push(leader);
+          }
+          return acc;
+        }, []);
+        
+        console.log(`✅ Fallback found ${uniqueLeaders.length} unique leaders for "${eventName}"`);
+        return {
+          total_leaders: uniqueLeaders.length,
+          leaders: uniqueLeaders,
+          event_name: eventName
+        };
       }
+      
       const data = await response.json();
       console.log(`✅ Found ${data.total_leaders} leaders for "${eventName}"`);
       return data;

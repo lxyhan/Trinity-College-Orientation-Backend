@@ -110,14 +110,29 @@ const EventItem = ({ event, index, isMobile = false, column = null, dayViewMode 
       .finally(() => setLoadingLeaders(false));
   }, [event]);
 
-  // Leaders display logic - limit to 3 people + remaining count
+  // Leaders display logic - dynamic limit based on event size and available space
   const leadersDisplay = useMemo(() => {
     if (!eventLeaders?.leaders) {
       return { showLeaders: [], hasMore: false, totalCount: 0 };
     }
 
     const leaders = eventLeaders.leaders;
-    const maxShow = 3; // Always show max 3 people
+    
+    // Calculate how many leaders we can show based on event duration and mobile status
+    let maxShow;
+    if (isMobile) {
+      // Mobile: Show more leaders since we have more space
+      maxShow = Math.min(leaders.length, 8);
+    } else {
+      // Desktop: Base on event duration for available space
+      if (duration >= 3) {
+        maxShow = Math.min(leaders.length, 6); // Long events: up to 6 leaders
+      } else if (duration >= 2) {
+        maxShow = Math.min(leaders.length, 4); // Medium events: up to 4 leaders  
+      } else {
+        maxShow = Math.min(leaders.length, 3); // Short events: up to 3 leaders
+      }
+    }
     
     return {
       showLeaders: leaders.slice(0, maxShow),
@@ -125,7 +140,7 @@ const EventItem = ({ event, index, isMobile = false, column = null, dayViewMode 
       totalCount: leaders.length,
       hiddenCount: Math.max(0, leaders.length - maxShow)
     };
-  }, [eventLeaders?.leaders]);
+  }, [eventLeaders?.leaders, duration, isMobile]);
 
   const statusInfo = getStatusInfo(event.staffing, event.is_meal);
   const leaderCount = eventLeaders?.total_leaders || 0;
