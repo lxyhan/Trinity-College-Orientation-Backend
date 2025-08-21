@@ -69,76 +69,7 @@ const WeekGrid = ({
           </div>
         </div>
 
-        {/* Mobile events section */}
-        <div className="sm:hidden flex-1 overflow-y-auto bg-gray-50">
-          <div className="p-4 pb-24">
-            {getMobileEvents(filteredEvents, selectedMobileDay, weekDates).length > 0 ? (
-              getMobileEvents(filteredEvents, selectedMobileDay, weekDates)
-                .sort((a, b) => {
-                  // Sort by start time
-                  const timeA = a.start_time || a['Start Time'] || '';
-                  const timeB = b.start_time || b['Start Time'] || '';
-                  return timeA.localeCompare(timeB);
-                })
-                .map((event, index) => (
-                  <div key={`mobile-event-${index}`} className="bg-white rounded-lg border border-gray-200 shadow-sm p-3 mb-3 last:mb-0">
-                    {/* Event header with time */}
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-900 text-base truncate">
-                          {event.event_name || event.Event}
-                        </h3>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {event.start_time || event['Start Time']} - {event.end_time || event['End Time']}
-                        </p>
-                      </div>
-                      <div className={`flex-shrink-0 w-3 h-3 rounded-full ml-3 mt-1`} 
-                           style={{ backgroundColor: event.is_meal ? '#f59e0b' : '#10b981' }} />
-                    </div>
-                    
-                    {/* Location */}
-                    {event.location && (
-                      <p className="text-sm text-gray-500 mb-2">
-                        📍 {event.location}
-                      </p>
-                    )}
-                    
-                    {/* Event type indicator */}
-                    {event.is_meal && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                        Meal Event
-                      </span>
-                    )}
-                    
-                    {/* Staffing info for non-meal events */}
-                    {!event.is_meal && event.staffing && (
-                      <div className="mt-2 text-xs text-gray-600">
-                        <span className="font-medium">Staffing:</span> {event.staffing.leadersAssigned}/{event.staffing.leadersNeeded} leaders 
-                        <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-medium ${
-                          event.staffing.status === 'fully_staffed' ? 'bg-green-100 text-green-800' :
-                          event.staffing.status === 'good' ? 'bg-blue-100 text-blue-800' :
-                          event.staffing.status === 'understaffed' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
-                          {event.staffing.status === 'fully_staffed' ? 'Fully Staffed' :
-                           event.staffing.status === 'good' ? 'Well Staffed' :
-                           event.staffing.status === 'understaffed' ? 'Understaffed' :
-                           'Critical'}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                ))
-            ) : (
-              <div className="text-center py-12">
-                <div className="text-gray-400 text-lg mb-2">📅</div>
-                <p className="text-gray-500">No events scheduled for this day</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="flex flex-auto">
+        <div className="hidden sm:flex flex-auto">
           <div className="sticky left-0 z-10 w-14 flex-none bg-white ring-1 ring-gray-100" />
           <div className="grid flex-auto grid-cols-1 grid-rows-1">
             {/* Time grid - 8am to 11pm */}
