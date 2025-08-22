@@ -465,7 +465,7 @@ ORIENTATION_EVENTS = {
       "is_indoor": True,
       "is_outdoor": False
     },
-    "Food Tour": {
+    "High Park Picnic": {
       "date": "Aug 30",
       "start_time": "12:30pm",
       "end_time": "5:30pm",
@@ -487,7 +487,7 @@ ORIENTATION_EVENTS = {
       "is_indoor": False,
       "is_outdoor": True
     },
-    "Picnic and City Tour": {
+    "Food Tour": {
       "date": "Aug 31",
       "start_time": "10:00am",
       "end_time": "6:00pm",
