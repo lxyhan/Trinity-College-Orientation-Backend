@@ -184,9 +184,9 @@ def schedule_event_leaders(leaders: List[Dict], events: Dict[str, Dict]) -> Dict
             slot_end = parse_time("12:00pm")
             return start >= slot_start and end <= slot_end
         elif availability.lower() == "afternoon":
-            # Afternoon: 12pm-6pm (extended to cover more afternoon events)
+            # Afternoon/Evening: 12pm-11pm (as per leader form - afternoon means afternoon/evening)
             slot_start = parse_time("12:00pm")
-            slot_end = parse_time("6:00pm")
+            slot_end = parse_time("11:00pm")
             return start >= slot_start and end <= slot_end
         elif availability.lower() == "evening":
             # Evening: 5pm-11pm (extended to cover late evening events)
