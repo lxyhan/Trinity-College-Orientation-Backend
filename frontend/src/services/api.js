@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://trinity-college-orientation-backend-production.up.railway.app';
+const API_BASE_URL = 'http://localhost:8000';
 
 export const apiService = {
   // Fetch all events

@@ -340,86 +340,44 @@ async def lookup_leader_schedule(leader_name: str):
     Returns:
         List of scheduled events with details
     """
+    # Validate search input first - require at least 3 characters
+    leader_name_cleaned = leader_name.strip()
+    if len(leader_name_cleaned) < 3:
+        raise HTTPException(status_code=400, detail="Search term must be at least 3 characters long")
+    
     try:
         if assignments_df is None or events_df is None:
             raise HTTPException(status_code=500, detail="Data not loaded")
         
-        # Search for the leader by name (case-insensitive)
-        leader_name_lower = leader_name.lower()
+        leader_name_lower = leader_name_cleaned.lower()
+        leader_assignments = pd.DataFrame()  # Start with empty
         
-        # Try to find the leader by email (most reliable)
-        leader_assignments = assignments_df[
-            assignments_df['Leader Email'].str.lower().str.contains(leader_name_lower, na=False)
-        ]
+        # First try name-based search (prioritize this)
+        try:
+            leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
+            
+            # Simple but effective name matching
+            name_matches = leaders_df[
+                (leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False)) |
+                (leaders_df['Last Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False)) |
+                ((leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()).str.contains(leader_name_lower, na=False, regex=False))
+            ]
+            
+            if len(name_matches) > 0:
+                # Get the email and find assignments
+                leader_email = name_matches.iloc[0]['Email']
+                leader_assignments = assignments_df[
+                    assignments_df['Leader Email'] == leader_email
+                ]
+        except Exception as e:
+            print(f"Error in name search: {e}")
         
-        # If no matches by email, try by name in the original data
-        if len(leader_assignments) == 0:
-            try:
-                leaders_df = pd.read_csv(os.path.join(get_base_dir(), "Trinity College Orientation Leaders 2025(Simplified).csv"))
-                # SMART name matching with exact match priority
-                search_words = leader_name_lower.replace('(', ' ').replace(')', ' ').split()
-                
-                # First try exact matches for full name or last name
-                exact_matches = pd.DataFrame()
-                
-                if len(search_words) >= 2:
-                    # Try "First Last" exact match
-                    full_name_condition = (
-                        leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()
-                    ).str.contains(leader_name_lower, na=False, regex=False)
-                    exact_matches = leaders_df[full_name_condition]
-                    
-                    # If no full name match, try individual word exact matches
-                    if len(exact_matches) == 0:
-                        for word in search_words:
-                            if len(word) > 1:
-                                # Check for exact word matches in first or last name
-                                word_matches = leaders_df[
-                                    (leaders_df['First Name'].str.lower() == word) |
-                                    (leaders_df['Last Name'].str.lower() == word)
-                                ]
-                                if len(word_matches) > 0:
-                                    exact_matches = pd.concat([exact_matches, word_matches]).drop_duplicates()
-                
-                # If we have exact matches, use those
-                if len(exact_matches) > 0:
-                    name_matches = exact_matches
-                else:
-                    # Fall back to partial matching
-                    conditions = []
-                    
-                    # For each word in the search, check if it appears in first or last name
-                    for word in search_words:
-                        if len(word) > 1:  # Skip single letters
-                            conditions.extend([
-                                leaders_df['First Name'].str.lower().str.contains(word, na=False, regex=False),
-                                leaders_df['Last Name'].str.lower().str.contains(word, na=False, regex=False)
-                            ])
-                    
-                    # Also try the full search term
-                    conditions.extend([
-                        leaders_df['First Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False),
-                        leaders_df['Last Name'].str.lower().str.contains(leader_name_lower, na=False, regex=False),
-                        (leaders_df['First Name'].str.lower() + ' ' + leaders_df['Last Name'].str.lower()).str.contains(leader_name_lower, na=False, regex=False)
-                    ])
-                    
-                    # Combine all conditions with OR
-                    if conditions:
-                        combined_condition = conditions[0]
-                        for condition in conditions[1:]:
-                            combined_condition = combined_condition | condition
-                        name_matches = leaders_df[combined_condition]
-                    else:
-                        name_matches = pd.DataFrame()  # Empty result
-                
-                if len(name_matches) > 0:
-                    # Get the email and find assignments
-                    leader_email = name_matches.iloc[0]['Email']
-                    leader_assignments = assignments_df[
-                        assignments_df['Leader Email'] == leader_email
-                    ]
-            except Exception as e:
-                print(f"Error searching by name: {e}")
+        # If no name matches and search is long enough, try restrictive email search
+        if len(leader_assignments) == 0 and len(leader_name_lower) >= 5:
+            # Only search email if the search term is substantial (5+ chars) to avoid false matches
+            leader_assignments = assignments_df[
+                assignments_df['Leader Email'].str.lower().str.contains(leader_name_lower, na=False, regex=False)
+            ]
         
         if len(leader_assignments) == 0:
             raise HTTPException(

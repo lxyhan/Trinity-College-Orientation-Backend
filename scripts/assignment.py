@@ -35,9 +35,10 @@ def parse_leaders_csv(csv_file: str) -> List[Dict]:
     
     return leaders
 
-def output_assignments_to_csv(result: Dict, output_file: str):
+def output_assignments_to_csv(result: Dict, output_file: str, backend_dir: str = None):
     """
     Convert the assignment results to CSV format for easy viewing.
+    Saves both regular files in root and enhanced files in backend directory.
     """
     # Create leader assignments CSV
     leader_rows = []
@@ -88,20 +89,46 @@ def output_assignments_to_csv(result: Dict, output_file: str):
         'Value': summary['labor_compliance']['max_hours_assigned']
     }]
     
-    # Save all CSVs
-    if leader_rows:
-        pd.DataFrame(leader_rows).to_csv(f"{output_file}_leader_assignments.csv", index=False)
-        print(f"Leader assignments saved to: {output_file}_leader_assignments.csv")
+    # Define file sets to save - only save to backend directory now
+    file_sets = []
     
-    if event_rows:
-        pd.DataFrame(event_rows).to_csv(f"{output_file}_event_staffing.csv", index=False)
-        print(f"Event staffing saved to: {output_file}_event_staffing.csv")
+    # Only save enhanced files to backend directory if specified
+    if backend_dir and os.path.exists(backend_dir):
+        file_sets.append({
+            'prefix': os.path.join(backend_dir, 'enhanced_orientation_assignments'),
+            'dir': backend_dir,
+            'type': 'enhanced'
+        })
+        print(f"📁 Saving assignment files to backend directory: {backend_dir}")
+    else:
+        # Fallback to current directory if no backend directory
+        file_sets.append({
+            'prefix': output_file,
+            'dir': '.',
+            'type': 'regular'
+        })
+        print("⚠️  Backend directory not found, saving to current directory")
     
-    if summary_rows:
-        pd.DataFrame(summary_rows).to_csv(f"{output_file}_summary.csv", index=False)
-        print(f"Summary saved to: {output_file}_summary.csv")
+    # Save all CSV files in both locations
+    for file_set in file_sets:
+        prefix = file_set['prefix']
+        
+        if leader_rows:
+            leader_file = f"{prefix}_leader_assignments.csv"
+            pd.DataFrame(leader_rows).to_csv(leader_file, index=False)
+            print(f"Leader assignments saved to: {leader_file}")
+        
+        if event_rows:
+            event_file = f"{prefix}_event_staffing.csv"
+            pd.DataFrame(event_rows).to_csv(event_file, index=False)
+            print(f"Event staffing saved to: {event_file}")
+        
+        if summary_rows:
+            summary_file = f"{prefix}_summary.csv"
+            pd.DataFrame(summary_rows).to_csv(summary_file, index=False)
+            print(f"Summary saved to: {summary_file}")
     
-    # Save time conflicts if any
+    # Save time conflicts if any (to backend directory if available)
     if result['time_conflicts']:
         conflict_rows = []
         for conflict in result['time_conflicts']:
@@ -110,8 +137,14 @@ def output_assignments_to_csv(result: Dict, output_file: str):
                 'Conflicting Events': ', '.join(conflict['conflicting_events']),
                 'Overlap Time': conflict['overlap_time']
             })
-        pd.DataFrame(conflict_rows).to_csv(f"{output_file}_time_conflicts.csv", index=False)
-        print(f"Time conflicts saved to: {output_file}_time_conflicts.csv")
+        
+        if backend_dir and os.path.exists(backend_dir):
+            conflict_file = os.path.join(backend_dir, "enhanced_orientation_assignments_time_conflicts.csv")
+        else:
+            conflict_file = f"{output_file}_time_conflicts.csv"
+            
+        pd.DataFrame(conflict_rows).to_csv(conflict_file, index=False)
+        print(f"Time conflicts saved to: {conflict_file}")
 
 def schedule_event_leaders(leaders: List[Dict], events: Dict[str, Dict]) -> Dict:
     """
@@ -446,7 +479,26 @@ if __name__ == "__main__":
         
         # Output results to CSV files
         output_prefix = "orientation_assignments"
-        output_assignments_to_csv(result, output_prefix)
+        backend_dir = "backend"
+        output_assignments_to_csv(result, output_prefix, backend_dir)
+        
+        # Generate meal eligibility if backend directory exists
+        if os.path.exists(backend_dir):
+            try:
+                print("\nGenerating meal eligibility...")
+                # Import and run meal eligibility generation
+                import sys
+                sys.path.append(backend_dir)
+                from scripts.generate_meal_eligibility import generate_meal_eligibility
+                
+                # Change to backend directory temporarily
+                original_dir = os.getcwd()
+                os.chdir(backend_dir)
+                generate_meal_eligibility()
+                os.chdir(original_dir)
+                print("✅ Meal eligibility generated successfully!")
+            except Exception as e:
+                print(f"Warning: Could not generate meal eligibility: {e}")
         
         # Print summary
         print("\n" + "="*60)
