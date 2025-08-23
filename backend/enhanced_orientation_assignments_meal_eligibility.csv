@@ -43,6 +43,7 @@ Dean's Lunch,hongzip.kim@mail.utoronto.ca,Working adjacent shift
 Dean's Lunch,iara.diazciancio@mail.utoronto.ca,Working adjacent shift
 Dean's Lunch,isabella.divetta@mail.utoronto.ca,Working during meal time
 Dean's Lunch,isabella.divetta@mail.utoronto.ca,Working adjacent shift
+Dean's Lunch,isabella.upper@mail.utoronto.ca,Working adjacent shift
 Dean's Lunch,janet.oduro@mail.utoronto.ca,Working adjacent shift
 Dean's Lunch,joy.liao@mail.utoronto.ca,Working during meal time
 Dean's Lunch,joy.liao@mail.utoronto.ca,Working adjacent shift
@@ -100,20 +101,17 @@ Dean's Lunch,xavier.baldwin@mail.utoronto.ca,Working during meal time
 Dean's Lunch,xavier.baldwin@mail.utoronto.ca,Working adjacent shift
 Dean's Lunch,zeynep.koc@mail.utoronto.ca,Working adjacent shift
 Dean's Lunch,adrianjulian.lam@mail.utoronto.ca,Working adjacent shift
-Dinner,adrianyh.cheng@mail.utoronto.ca,Working during meal time
 Dinner,alishaa.khan@mail.utoronto.ca,Working adjacent shift
 Dinner,alishaa.khan@mail.utoronto.ca,Working during meal time
 Dinner,amitpal.khasria@mail.utoronto.ca,Working adjacent shift
 Dinner,angeline.smeets@mail.utoronto.ca,Working adjacent shift
 Dinner,angeline.smeets@mail.utoronto.ca,Working during meal time
-Dinner,anudari.sainbuyan@mail.utoronto.ca,Working during meal time
 Dinner,arya.twohey@mail.utoronto.ca,Working during meal time
 Dinner,camila.ali@mail.utoronto.ca,Working during meal time
+Dinner,chae.kang@mail.utoronto.ca,Working during meal time
 Dinner,cm.walsh@mail.utoronto.ca,Working adjacent shift
-Dinner,cordelia.simmons@mail.utoronto.ca,Working during meal time
 Dinner,deekshitha.veluru@mail.utoronto.ca,Working adjacent shift
 Dinner,eric.sundaram@mail.utoronto.ca,Working adjacent shift
-Dinner,eric.sundaram@mail.utoronto.ca,Working during meal time
 Dinner,gigi.devlin@mail.utoronto.ca,Working during meal time
 Dinner,gurmanat.kahlon@mail.utoronto.ca,Working adjacent shift
 Dinner,haniya.waheed@mail.utoronto.ca,Working during meal time
@@ -124,13 +122,15 @@ Dinner,janet.oduro@mail.utoronto.ca,Working adjacent shift
 Dinner,junaiya.bunn@mail.utoronto.ca,Working adjacent shift
 Dinner,kyungyeon.park@mail.utoronto.ca,Working during meal time
 Dinner,leora.kasneci@mail.utoronto.ca,Working during meal time
+Dinner,lillyann.zhang@mail.utoronto.ca,Working during meal time
 Dinner,lisa.cao@mail.utoronto.ca,Working adjacent shift
-Dinner,maddie.bank@mail.utoronto.ca,Working during meal time
 Dinner,madison.ketcheson@mail.utoronto.ca,Working during meal time
-Dinner,marwa.rassoli@mail.utoronto.ca,Working during meal time
 Dinner,melina.mollaeizadeh@mail.utoronto.ca,Working during meal time
+Dinner,molly.shara@mail.utoronto.ca,Working during meal time
 Dinner,natalie.hsu@mail.utoronto.ca,Working during meal time
 Dinner,noahro.yan@mail.utoronto.ca,Working adjacent shift
+Dinner,noahro.yan@mail.utoronto.ca,Working during meal time
+Dinner,olivia.champion@mail.utoronto.ca,Working during meal time
 Dinner,oluwabori.ayoola@mail.utoronto.ca,Working during meal time
 Dinner,rashmigaa.suresh@mail.utoronto.ca,Working adjacent shift
 Dinner,sarahc.christie@mail.utoronto.ca,Working adjacent shift
@@ -145,6 +145,7 @@ Dinner,stirling.wallace@mail.utoronto.ca,Working during meal time
 Dinner,sujoy.das@mail.utoronto.ca,Working during meal time
 Dinner,tanvi.singh@mail.utoronto.ca,Working during meal time
 Dinner,vignesh.khajuria@mail.utoronto.ca,Working adjacent shift
+Dinner,vignesh.khajuria@mail.utoronto.ca,Working during meal time
 Dinner,vitta.zarembo@mail.utoronto.ca,Working during meal time
 Dinner,williamry.gao@mail.utoronto.ca,Working adjacent shift
 Dinner,williamry.gao@mail.utoronto.ca,Working during meal time
@@ -173,16 +174,20 @@ Lunch,adrianyh.cheng@mail.utoronto.ca,Working during meal time
 Lunch,adrianyh.cheng@mail.utoronto.ca,Working adjacent shift
 Lunch,alex.mackmumford@mail.utoronto.ca,Working adjacent shift
 Lunch,ali.machava@mail.utoronto.ca,Working adjacent shift
+Lunch,alishaa.khan@mail.utoronto.ca,Working adjacent shift
 Lunch,amal.abdullaeva@mail.utoronto.ca,Working adjacent shift
 Lunch,amelie.pinard@mail.utoronto.ca,Working during meal time
 Lunch,amelie.pinard@mail.utoronto.ca,Working adjacent shift
+Lunch,amitpal.khasria@mail.utoronto.ca,Working adjacent shift
 Lunch,ananya.menon@mail.utoronto.ca,Working during meal time
 Lunch,andrewzh.tang@mail.utoronto.ca,Working adjacent shift
+Lunch,anudari.sainbuyan@mail.utoronto.ca,Working adjacent shift
 Lunch,arushi.varier@mail.utoronto.ca,Working during meal time
 Lunch,arya.twohey@mail.utoronto.ca,Working adjacent shift
 Lunch,aryan.desai@mail.utoronto.ca,Working during meal time
 Lunch,aryan.desai@mail.utoronto.ca,Working adjacent shift
 Lunch,bella.snyder@mail.utoronto.ca,Working during meal time
+Lunch,bella.snyder@mail.utoronto.ca,Working adjacent shift
 Lunch,cm.walsh@mail.utoronto.ca,Working adjacent shift
 Lunch,cm.walsh@mail.utoronto.ca,Working during meal time
 Lunch,cordelia.simmons@mail.utoronto.ca,Working adjacent shift
@@ -191,12 +196,12 @@ Lunch,cynthiaxy.qu@mail.utoronto.ca,Working adjacent shift
 Lunch,emaanaqil.abbasi@mail.utoronto.ca,Working adjacent shift
 Lunch,emilyy.ng@mail.utoronto.ca,Working adjacent shift
 Lunch,eric.damico@mail.utoronto.ca,Working adjacent shift
-Lunch,eric.sundaram@mail.utoronto.ca,Working adjacent shift
-Lunch,farzana.fagun@mail.utoronto.ca,Working adjacent shift
+Lunch,francesca.lisi@mail.utoronto.ca,Working adjacent shift
 Lunch,gigi.devlin@mail.utoronto.ca,Working adjacent shift
 Lunch,gourav.gupta@mail.utoronto.ca,Working adjacent shift
 Lunch,guna.kim@mail.utoronto.ca,Working during meal time
 Lunch,guna.kim@mail.utoronto.ca,Working adjacent shift
+Lunch,haniya.waheed@mail.utoronto.ca,Working adjacent shift
 Lunch,harrish.loganathan@mail.utoronto.ca,Working adjacent shift
 Lunch,harrish.loganathan@mail.utoronto.ca,Working during meal time
 Lunch,hasveena.arulrajan@mail.utoronto.ca,Working adjacent shift
@@ -204,30 +209,26 @@ Lunch,hayuni.kim@mail.utoronto.ca,Working adjacent shift
 Lunch,hongzip.kim@mail.utoronto.ca,Working during meal time
 Lunch,iara.diazciancio@mail.utoronto.ca,Working adjacent shift
 Lunch,iara.diazciancio@mail.utoronto.ca,Working during meal time
-Lunch,isabella.upper@mail.utoronto.ca,Working adjacent shift
 Lunch,jiho.ha@mail.utoronto.ca,Working adjacent shift
 Lunch,joy.liao@mail.utoronto.ca,Working adjacent shift
+Lunch,junaiya.bunn@mail.utoronto.ca,Working adjacent shift
 Lunch,justin.fan@mail.utoronto.ca,Working adjacent shift
 Lunch,jyjessica.guan@mail.utoronto.ca,Working adjacent shift
 Lunch,kangchan.kim@mail.utoronto.ca,Working adjacent shift
+Lunch,kyungyeon.park@mail.utoronto.ca,Working adjacent shift
 Lunch,lamis.abdelaziz@mail.utoronto.ca,Working adjacent shift
 Lunch,leora.kasneci@mail.utoronto.ca,Working during meal time
-Lunch,lillyann.zhang@mail.utoronto.ca,Working adjacent shift
 Lunch,lily.portsmouth@mail.utoronto.ca,Working adjacent shift
-Lunch,lisa.cao@mail.utoronto.ca,Working adjacent shift
-Lunch,maria.acosta@mail.utoronto.ca,Working adjacent shift
+Lunch,maddie.bank@mail.utoronto.ca,Working adjacent shift
+Lunch,melina.mollaeizadeh@mail.utoronto.ca,Working adjacent shift
 Lunch,mert.nazlim@mail.utoronto.ca,Working adjacent shift
 Lunch,michell.li@mail.utoronto.ca,Working adjacent shift
 Lunch,midaniel.kim@mail.utoronto.ca,Working during meal time
-Lunch,molly.shara@mail.utoronto.ca,Working adjacent shift
-Lunch,myra.lim@mail.utoronto.ca,Working adjacent shift
+Lunch,midaniel.kim@mail.utoronto.ca,Working adjacent shift
+Lunch,molly.shara@mail.utoronto.ca,Working during meal time
 Lunch,nicolas.douville@mail.utoronto.ca,Working during meal time
 Lunch,nicolas.douville@mail.utoronto.ca,Working adjacent shift
-Lunch,noahro.yan@mail.utoronto.ca,Working adjacent shift
 Lunch,rayn.lakhani@mail.utoronto.ca,Working adjacent shift
-Lunch,rebecca.belashov@mail.utoronto.ca,Working adjacent shift
-Lunch,sahrish.asrani@mail.utoronto.ca,Working during meal time
-Lunch,sahrish.asrani@mail.utoronto.ca,Working adjacent shift
 Lunch,sarahc.christie@mail.utoronto.ca,Working adjacent shift
 Lunch,sarina.hamzehian@mail.utoronto.ca,Working adjacent shift
 Lunch,sarina.hamzehian@mail.utoronto.ca,Working during meal time
@@ -245,15 +246,13 @@ Lunch,xavier.baldwin@mail.utoronto.ca,Working during meal time
 Lunch,xavier.baldwin@mail.utoronto.ca,Working adjacent shift
 Lunch,zeynep.koc@mail.utoronto.ca,Working adjacent shift
 Lunch,adrianjulian.lam@mail.utoronto.ca,Working during meal time
+Dinner (Aug 26),adrianyh.cheng@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),ali.machava@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),alishaa.khan@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),alishaa.khan@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),amelie.pinard@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),amelie.pinard@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),amitpal.khasria@mail.utoronto.ca,Working adjacent shift
-Dinner (Aug 26),ananya.menon@mail.utoronto.ca,Working adjacent shift
-Dinner (Aug 26),andrewzh.tang@mail.utoronto.ca,Working adjacent shift
-Dinner (Aug 26),bella.snyder@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),camila.ali@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),cm.walsh@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),cm.walsh@mail.utoronto.ca,Working during meal time
@@ -266,6 +265,7 @@ Dinner (Aug 26),eric.damico@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),farzana.fagun@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),farzana.fagun@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),fiona.john@mail.utoronto.ca,Working adjacent shift
+Dinner (Aug 26),francesca.lisi@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),gigi.devlin@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),guna.kim@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),gurmanat.kahlon@mail.utoronto.ca,Working adjacent shift
@@ -283,39 +283,40 @@ Dinner (Aug 26),joy.liao@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),junaiya.bunn@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),justin.fan@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),jyjessica.guan@mail.utoronto.ca,Working during meal time
-Dinner (Aug 26),jyjessica.guan@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),leora.kasneci@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),lily.portsmouth@mail.utoronto.ca,Working during meal time
+Dinner (Aug 26),lily.portsmouth@mail.utoronto.ca,Working adjacent shift
+Dinner (Aug 26),lisa.cao@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),maddie.bank@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),maddie.bank@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),maria.acosta@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),marissa.schneider@mail.utoronto.ca,Working adjacent shift
-Dinner (Aug 26),marwa.rassoli@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),maxwell.baldwin@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),melina.mollaeizadeh@mail.utoronto.ca,Working adjacent shift
+Dinner (Aug 26),melina.mollaeizadeh@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),mert.nazlim@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),midaniel.kim@mail.utoronto.ca,Working adjacent shift
-Dinner (Aug 26),midaniel.kim@mail.utoronto.ca,Working during meal time
+Dinner (Aug 26),molly.shara@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),myra.lim@mail.utoronto.ca,Working adjacent shift
-Dinner (Aug 26),noahro.yan@mail.utoronto.ca,Working adjacent shift
+Dinner (Aug 26),noahro.yan@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),olivia.champion@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),olivia.champion@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),oluwabori.ayoola@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),rashmigaa.suresh@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),rayn.lakhani@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),rebecca.belashov@mail.utoronto.ca,Working during meal time
+Dinner (Aug 26),rebecca.belashov@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),sahrish.asrani@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),sarahc.christie@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),sarina.hamzehian@mail.utoronto.ca,Working during meal time
 Dinner (Aug 26),sarina.hamzehian@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),severin.jackson@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),severin.jackson@mail.utoronto.ca,Working during meal time
+Dinner (Aug 26),sonya.sun@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),sophie.aumais@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),stirling.wallace@mail.utoronto.ca,Working during meal time
-Dinner (Aug 26),stirling.wallace@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),v.smart@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),valentina.walker@mail.utoronto.ca,Working adjacent shift
-Dinner (Aug 26),vignesh.khajuria@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),vincent.say@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),xavier.baldwin@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 26),zeynep.koc@mail.utoronto.ca,Working adjacent shift
@@ -323,6 +324,7 @@ Dinner (Aug 26),adrianjulian.lam@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),adrianyh.cheng@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),alex.mackmumford@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),amal.abdullaeva@mail.utoronto.ca,Working adjacent shift
+Breakfast (Aug 27),ananya.menon@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),andrewzh.tang@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),arushi.varier@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),arya.twohey@mail.utoronto.ca,Working adjacent shift
@@ -348,11 +350,10 @@ Breakfast (Aug 27),madison.ketcheson@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),maria.acosta@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),melina.mollaeizadeh@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),michell.li@mail.utoronto.ca,Working adjacent shift
+Breakfast (Aug 27),molly.shara@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),natalie.hsu@mail.utoronto.ca,Working adjacent shift
-Breakfast (Aug 27),nicolas.douville@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),noahro.yan@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),oliver.acott@mail.utoronto.ca,Working adjacent shift
-Breakfast (Aug 27),olivia.champion@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),rayn.lakhani@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),sarina.hamzehian@mail.utoronto.ca,Working adjacent shift
 Breakfast (Aug 27),severin.jackson@mail.utoronto.ca,Working adjacent shift
@@ -428,7 +429,6 @@ Lunch (Aug 27),nicolas.douville@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 27),noahro.yan@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 27),oliver.acott@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 27),oliver.acott@mail.utoronto.ca,Working during meal time
-Lunch (Aug 27),olivia.champion@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 27),rayn.lakhani@mail.utoronto.ca,Working during meal time
 Lunch (Aug 27),rebecca.belashov@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 27),sarahc.christie@mail.utoronto.ca,Working adjacent shift
@@ -491,9 +491,9 @@ Dinner (Aug 27),lillyann.zhang@mail.utoronto.ca,Working during meal time
 Dinner (Aug 27),lillyann.zhang@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 27),lily.portsmouth@mail.utoronto.ca,Working during meal time
 Dinner (Aug 27),madison.ketcheson@mail.utoronto.ca,Working adjacent shift
+Dinner (Aug 27),marissa.schneider@mail.utoronto.ca,Working during meal time
 Dinner (Aug 27),marwa.rassoli@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 27),maxwell.baldwin@mail.utoronto.ca,Working adjacent shift
-Dinner (Aug 27),melina.mollaeizadeh@mail.utoronto.ca,Working during meal time
 Dinner (Aug 27),mert.nazlim@mail.utoronto.ca,Working adjacent shift
 Dinner (Aug 27),mert.nazlim@mail.utoronto.ca,Working during meal time
 Dinner (Aug 27),midaniel.kim@mail.utoronto.ca,Working adjacent shift
@@ -554,7 +554,6 @@ Lunch (Aug 28),adrianyh.cheng@mail.utoronto.ca,Working during meal time
 Lunch (Aug 28),adrianyh.cheng@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),alex.mackmumford@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),ali.machava@mail.utoronto.ca,Working adjacent shift
-Lunch (Aug 28),ali.machava@mail.utoronto.ca,Working during meal time
 Lunch (Aug 28),alishaa.khan@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),amal.abdullaeva@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),amelie.pinard@mail.utoronto.ca,Working adjacent shift
@@ -609,9 +608,9 @@ Lunch (Aug 28),melina.mollaeizadeh@mail.utoronto.ca,Working during meal time
 Lunch (Aug 28),melina.mollaeizadeh@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),mert.nazlim@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),michell.li@mail.utoronto.ca,Working adjacent shift
-Lunch (Aug 28),molly.shara@mail.utoronto.ca,Working adjacent shift
+Lunch (Aug 28),molly.shara@mail.utoronto.ca,Working during meal time
 Lunch (Aug 28),myra.lim@mail.utoronto.ca,Working adjacent shift
-Lunch (Aug 28),nicolas.douville@mail.utoronto.ca,Working during meal time
+Lunch (Aug 28),nicolas.douville@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),oliver.acott@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),olivia.champion@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),oluwabori.ayoola@mail.utoronto.ca,Working adjacent shift
@@ -619,6 +618,7 @@ Lunch (Aug 28),rashmigaa.suresh@mail.utoronto.ca,Working during meal time
 Lunch (Aug 28),rashmigaa.suresh@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),rayn.lakhani@mail.utoronto.ca,Working adjacent shift
 Lunch (Aug 28),sahrish.asrani@mail.utoronto.ca,Working adjacent shift
+Lunch (Aug 28),sahrish.asrani@mail.utoronto.ca,Working during meal time
 Lunch (Aug 28),sarahc.christie@mail.utoronto.ca,Working during meal time
 Lunch (Aug 28),serafina.moore@mail.utoronto.ca,Working during meal time
 Lunch (Aug 28),severin.jackson@mail.utoronto.ca,Working adjacent shift
