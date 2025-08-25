@@ -455,7 +455,7 @@ ORIENTATION_EVENTS = {
       "is_outdoor": False
     },
     "TCOS Bouldering Event": {
-      "date": "Aug 30",
+      "date": "Aug 31",
       "start_time": "10:00am",
       "end_time": "12:00pm",
       "leaders_needed": 8,
@@ -466,11 +466,11 @@ ORIENTATION_EVENTS = {
       "is_outdoor": False
     },
     "High Park Picnic": {
-      "date": "Aug 30",
-      "start_time": "12:30pm",
-      "end_time": "5:30pm",
+      "date": "Aug 30", 
+      "start_time": "10:00am",
+      "end_time": "6:00pm",
       "leaders_needed": 12,
-      "location": "Greektown, Koreatown, Chinatown",
+      "location": "High Park",
       "is_meal": False,
       "is_core": False,
       "is_indoor": False,
@@ -489,7 +489,7 @@ ORIENTATION_EVENTS = {
     },
     "Food Tour": {
       "date": "Aug 31",
-      "start_time": "10:00am",
+      "start_time": "12:00pm",
       "end_time": "6:00pm",
       "leaders_needed": 12,
       "location": "High Park",
